@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-import 'package:shared_preferences_settings/shared_preferences_settings.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import '../NRC_db/getNRC.dart';
@@ -8,6 +7,8 @@ import 'package:flutter_app/model/Form1.dart';
 import 'package:flutter_app/model/Form3.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
+import '../setting/shared_preferences_settings.dart';
+import 'package:http/http.dart' as http;
 
 class Form2 extends StatefulWidget {
   const Form2({Key key, String username}) : super(key: key);
@@ -19,6 +20,14 @@ class Form2 extends StatefulWidget {
 class _State extends State<Form2> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  TextEditingController ethnic = new TextEditingController();
+  TextEditingController religion = new TextEditingController();
+  TextEditingController birthPlace = new TextEditingController();
+  TextEditingController township = new TextEditingController();
+  TextEditingController division = new TextEditingController();
+  TextEditingController fatherAddress = new TextEditingController();
+  TextEditingController motherAddress = new TextEditingController();
+
   getNRC nrc = getNRC();
 
   List<String> _codes = [".."];
@@ -27,6 +36,7 @@ class _State extends State<Form2> {
 
   String _selectedCodeName;
   String newValue;
+
 
   @override
   void initState() {
@@ -100,6 +110,7 @@ class _State extends State<Form2> {
               title: 'Dark Mode',
               subtitle: 'Dark Mode On',
               subtitleIfOff: 'Dark Mode Off',
+              defaultValue: false,
             ),
             new Divider(),
             new ListTile(
@@ -121,6 +132,7 @@ class _State extends State<Form2> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    controller: ethnic,
                     decoration: InputDecoration(
                       labelText: 'လူမျိုး',
                       prefixIcon: Icon(Icons.info),
@@ -133,6 +145,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: religion,
                     decoration: InputDecoration(
                       labelText: 'ကိုးကွယ်သည့်ဘာသာ',
                       prefixIcon: Icon(Icons.info),
@@ -145,6 +158,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: birthPlace,
                     decoration: InputDecoration(
                       labelText: 'မွေးဖွားရာဇာတိ',
                       prefixIcon: Icon(Icons.info),
@@ -157,6 +171,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: township,
                     decoration: InputDecoration(
                       labelText: 'မြို့နယ်',
                       prefixIcon: Icon(Icons.info),
@@ -169,6 +184,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: division,
                     decoration: InputDecoration(
                       labelText: 'ပြည်နယ်/တိုင်းဒေသကြီး',
                       prefixIcon: Icon(Icons.info),
@@ -287,6 +303,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: fatherAddress,
                     decoration: InputDecoration(
                       labelText: 'အဘအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
                       prefixIcon: Icon(Icons.add_location),
@@ -299,6 +316,7 @@ class _State extends State<Form2> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: motherAddress,
                     decoration: InputDecoration(
                       labelText: 'အမိအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
                       prefixIcon: Icon(Icons.add_location),
@@ -355,8 +373,17 @@ class _State extends State<Form2> {
     }
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState.validate()) {
+      await http.post("https://unireg.000webhostapp.com//insert.php", body: {
+        "ethnic": ethnic.text,
+        "religion": religion.text,
+        "birthPlace": birthPlace.text,
+        "township": township.text,
+        "division": division.text,
+        "fatherAddress": fatherAddress.text,
+        "motherAddress": motherAddress.text,
+      });
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
         return new Form3();

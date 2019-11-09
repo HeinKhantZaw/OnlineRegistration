@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ThemeData.dart';
 import 'package:flutter_app/main.dart';
-import 'package:shared_preferences_settings/shared_preferences_settings.dart';
+import '../setting/shared_preferences_settings.dart';
 import '../widgets/widgets.dart';
 import 'Form3.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
+import 'package:http/http.dart' as http;
 
 class Form4 extends StatefulWidget {
   const Form4({Key key, String username}) : super(key: key);
@@ -17,6 +18,12 @@ class Form4 extends StatefulWidget {
 class _State extends State<Form4> {
   bool darkThemeEnabled = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController providerName = new TextEditingController();
+  TextEditingController relationship = new TextEditingController();
+  TextEditingController providerJob = new TextEditingController();
+  TextEditingController providerAddress = new TextEditingController();
+  TextEditingController providerPhoneNum = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +112,7 @@ class _State extends State<Form4> {
                 children: <Widget>[
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: providerName,
                     decoration: InputDecoration(
                       labelText: 'အထောက်အပံ့ပေးမည့်ပုဂ္ဂိုလ်အမည်',
                       prefixIcon: Icon(Icons.account_circle),
@@ -117,11 +125,12 @@ class _State extends State<Form4> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: relationship,
                     decoration: InputDecoration(
                       labelText: 'ဆွေမျိုးတော်စပ်ပုံ',
                       prefixIcon: Icon(Icons.people),
                     ),
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'ထည့်ရန်လိုသည်';
@@ -130,11 +139,12 @@ class _State extends State<Form4> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: providerJob,
                     decoration: InputDecoration(
                       labelText: 'အလုပ်အကိုင်',
                       prefixIcon: Icon(Icons.business_center),
                     ),
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'ထည့်ရန်လိုသည်';
@@ -143,11 +153,12 @@ class _State extends State<Form4> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: providerAddress,
                     decoration: InputDecoration(
                       labelText: 'ဆက်သွယ်ရန်လိပ်စာ',
                       prefixIcon: Icon(Icons.add_location),
                     ),
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'လိပ်စာထည့်ရန်လိုသည်';
@@ -156,6 +167,7 @@ class _State extends State<Form4> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: providerPhoneNum,
                     decoration: InputDecoration(
                       labelText: 'ဖုန်းနံပါတ်',
                       prefixIcon: Icon(Icons.call),
@@ -187,7 +199,7 @@ class _State extends State<Form4> {
                             KRaisedButton(
                               radius: 30.0,
                               color: Colors.teal,
-                              text: 'Next',
+                              text: 'Submit',
                               textColor: Colors.white,
                               textFontWeight: FontWeight.bold,
                               onPressed: _submit,
@@ -213,9 +225,15 @@ class _State extends State<Form4> {
     }
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState.validate()) {
-      Navigator.of(context);
+      await http.post("https://unireg.000webhostapp.com//insert.php", body: {
+        "providerName": providerName.text,
+        "relationship": relationship.text,
+        "providerJob": providerJob.text,
+        "providerAddress": providerAddress.text,
+        "providerPhoneNum": providerPhoneNum.text,
+      });
     }
   }
 }

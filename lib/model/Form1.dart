@@ -6,7 +6,9 @@ import '../widgets/widgets.dart';
 import 'Form2.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
-import 'package:shared_preferences_settings/shared_preferences_settings.dart';
+import '../setting/shared_preferences_settings.dart';
+import '../setting/settings.dart';
+import 'package:http/http.dart' as http;
 
 class Form1 extends StatefulWidget {
   const Form1({Key key, String username}) : super(key: key);
@@ -16,14 +18,20 @@ class Form1 extends StatefulWidget {
 }
 
 class _State extends State<Form1> {
+  TextEditingController mmName = new TextEditingController();
+  TextEditingController engName = new TextEditingController();
+  TextEditingController roll = new TextEditingController();
+  TextEditingController uniID = new TextEditingController();
+  TextEditingController uniStart = new TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool darkThemeEnabled = false;
+  Future<bool> darkThemeEnabled = Settings().getBool("ThemeKey", false);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
+        theme: darkThemeEnabled != null ? ThemeData.dark() : buildThemeData(),
         home: home());
   }
 
@@ -78,12 +86,11 @@ class _State extends State<Form1> {
                   Navigator.pop(context);
                 },
               ),
-
-              SwitchSettingsTile(
+              new SwitchSettingsTile(
                 settingKey: 'ThemeKey',
                 title: 'Dark Mode',
-                  subtitle: 'Dark Mode On',
-                  subtitleIfOff: 'Dark Mode Off',
+                subtitle: 'Dark Mode On',
+                subtitleIfOff: 'Dark Mode Off',
                 defaultValue: false,
               ),
               new Divider(),
@@ -107,6 +114,7 @@ class _State extends State<Form1> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    controller: engName,
                     decoration: InputDecoration(
                       labelText: 'အမည်(English လို)',
                       prefixIcon: Icon(Icons.person),
@@ -119,6 +127,7 @@ class _State extends State<Form1> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: mmName,
                     decoration: InputDecoration(
                       labelText: 'အမည်(Myanmar လို)',
                       prefixIcon: Icon(Icons.person),
@@ -131,6 +140,7 @@ class _State extends State<Form1> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: roll,
                     decoration: InputDecoration(
                       labelText: 'ခုံနံပါတ်',
                       prefixIcon: Icon(Icons.info),
@@ -143,6 +153,7 @@ class _State extends State<Form1> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: uniID,
                     decoration: InputDecoration(
                       labelText: 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်',
                       prefixIcon: Icon(Icons.info),
@@ -156,6 +167,7 @@ class _State extends State<Form1> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    controller: uniStart,
                     decoration: InputDecoration(
                       labelText: 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်',
                       prefixIcon: Icon(Icons.info),
@@ -196,8 +208,16 @@ class _State extends State<Form1> {
         ));
   }
 
-  void _submit() {
+  Future _submit() async {
     if (_formKey.currentState.validate()) {
+      await http.post("https://unireg.000webhostapp.com//insert.php", body: {
+        "mmName": mmName.text,
+        "engName": engName.text,
+        "roll": roll.text,
+        "uniID": uniID.text,
+        "uniStart": uniStart.text,
+      });
+
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
         return new Form2();
