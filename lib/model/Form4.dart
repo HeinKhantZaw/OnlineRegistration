@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ThemeData.dart';
 import 'package:flutter_app/main.dart';
+import 'package:shared_preferences_settings/shared_preferences_settings.dart';
 import '../widgets/widgets.dart';
 import 'Form3.dart';
 import 'qr.dart';
@@ -20,9 +22,8 @@ class _State extends State<Form4> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: darkThemeEnabled ? ThemeData.dark() : ThemeData.light(),
-        home: home()
-    );
+        theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
+        home: home());
   }
 
   @override
@@ -31,78 +32,68 @@ class _State extends State<Form4> {
         appBar: AppBar(title: Text('Student Registration')),
         endDrawer: new Drawer(
             child: ListView(
-              children: <Widget>[
-                new Column(children: <Widget>[
-                  new UserAccountsDrawerHeader(
-                    accountName: new Text(
-                        "$username",
-                        style: new TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0)
-                    ),
-                    accountEmail: new Text(
-                      "firstname@lastname.com",
-                      style: new TextStyle(color: Colors.blueGrey[50]),
-                    ),
-                    currentAccountPicture: new CircleAvatar(
-                        backgroundColor: Colors.brown, child: new Text("FL")),
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: new Text('My Profiles'),
-
-                    onTap: () {
-                      this.setState(() {
-                        var screen = 1;
-                      });
-
-                    },
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.center_focus_strong),
-                    title: new Text('KBZpay QR Code'),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: ( BuildContext context ) => new qr()));
-                    },
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.error_outline),
-                    title: new Text('Terms & Regulations'),
-                    onTap: () {
-                      this.setState(() {
-                        var screen = 0;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ),
-                  new ListTile(
-                    title: Text("Dark Theme"),
-                    trailing: Switch(
-                      value: darkThemeEnabled,
-                      onChanged: (changedTheme) {
-                        setState(() {
-                          darkThemeEnabled = changedTheme;
-                        });
-                      },
-                    ),
-                  ),
-                  new Divider(),
-                  new ListTile(
-                    leading: Icon(Icons.power_settings_new),
-                    title: new Text('Logout'),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-
-
-                ]
+          children: <Widget>[
+            new Column(children: <Widget>[
+              new UserAccountsDrawerHeader(
+                accountName: new Text("$username",
+                    style: new TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0)),
+                accountEmail: new Text(
+                  "firstname@lastname.com",
+                  style: new TextStyle(color: Colors.blueGrey[50]),
                 ),
-              ],
-            )
-        ),
+                currentAccountPicture: new CircleAvatar(
+                    backgroundColor: Colors.brown, child: new Text("FL")),
+              ),
+              new ListTile(
+                leading: Icon(Icons.account_circle),
+                title: new Text('My Profiles'),
+                onTap: () {
+                  this.setState(() {
+                    var screen = 1;
+                  });
+                },
+              ),
+              new ListTile(
+                leading: Icon(Icons.center_focus_strong),
+                title: new Text('KBZpay QR Code'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) => new qr()));
+                },
+              ),
+              new ListTile(
+                leading: Icon(Icons.error_outline),
+                title: new Text('Terms & Regulations'),
+                onTap: () {
+                  this.setState(() {
+                    var screen = 0;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              new SwitchSettingsTile(
+                settingKey: 'ThemeKey',
+                title: 'Dark Mode',
+                subtitle: 'Dark Mode On',
+                subtitleIfOff: 'Dark Mode Off',
+              ),
+              new Divider(),
+              new ListTile(
+                leading: Icon(Icons.power_settings_new),
+                title: new Text('Logout'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ]),
+          ],
+        )),
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
           child: new Form(
@@ -112,7 +103,6 @@ class _State extends State<Form4> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
                   const SizedBox(height: 16.0),
                   TextFormField(
                     decoration: InputDecoration(
@@ -131,56 +121,52 @@ class _State extends State<Form4> {
                       labelText: 'ဆွေမျိုးတော်စပ်ပုံ',
                       prefixIcon: Icon(Icons.people),
                     ),
-                    keyboardType:TextInputType.number,
+                    keyboardType: TextInputType.number,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'ထည့်ရန်လိုသည်';
                       }
                     },
                   ),
-
                   const SizedBox(height: 16.0),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'အလုပ်အကိုင်',
                       prefixIcon: Icon(Icons.business_center),
                     ),
-                    keyboardType:TextInputType.number,
+                    keyboardType: TextInputType.number,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'ထည့်ရန်လိုသည်';
                       }
                     },
                   ),
-
                   const SizedBox(height: 16.0),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'ဆက်သွယ်ရန်လိပ်စာ',
                       prefixIcon: Icon(Icons.add_location),
                     ),
-                    keyboardType:TextInputType.number,
+                    keyboardType: TextInputType.number,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'လိပ်စာထည့်ရန်လိုသည်';
                       }
                     },
                   ),
-
                   const SizedBox(height: 16.0),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'ဖုန်းနံပါတ်',
                       prefixIcon: Icon(Icons.call),
                     ),
-                    keyboardType:TextInputType.number,
+                    keyboardType: TextInputType.number,
                     validator: (String value) {
                       if (value.trim().isEmpty) {
                         return 'ဖုန်းနံပါတ်ထည့်ရန်လိုသည်';
                       }
                     },
                   ),
-
                   const SizedBox(height: 16.0),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -197,7 +183,6 @@ class _State extends State<Form4> {
                               textColor: Colors.white,
                               textFontWeight: FontWeight.bold,
                               onPressed: _back,
-
                             ),
                             KRaisedButton(
                               radius: 30.0,
@@ -206,15 +191,12 @@ class _State extends State<Form4> {
                               textColor: Colors.white,
                               textFontWeight: FontWeight.bold,
                               onPressed: _submit,
-
                             ),
                           ],
                         )
                       ],
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -237,5 +219,3 @@ class _State extends State<Form4> {
     }
   }
 }
-
-

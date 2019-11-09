@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
+import 'package:shared_preferences_settings/shared_preferences_settings.dart';
+import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import '../NRC_db/getNRC.dart';
 import 'package:flutter_app/model/Form1.dart';
@@ -21,9 +23,10 @@ class _State extends State<Form2> {
 
   List<String> _codes = [".."];
   List<String> _codeNames = [".."];
-  String _selectedCode ;
+  String _selectedCode;
+
   String _selectedCodeName;
-  String newValue ;
+  String newValue;
 
   @override
   void initState() {
@@ -31,70 +34,83 @@ class _State extends State<Form2> {
     super.initState();
   }
 
+  bool darkThemeEnabled = false;
+
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
+        home: home());
+  }
+
+  @override
+  Widget home() {
     return Scaffold(
         appBar: AppBar(title: Text('Student Registration')),
         endDrawer: new Drawer(
-            child: ListView(
-              children: <Widget>[
-                new Column(children: <Widget>[
-                  new UserAccountsDrawerHeader(
-                    accountName: new Text(
-                        "$username",
-                        style: new TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0)
-                    ),
-                    accountEmail: new Text(
-                      "firstname@lastname.com",
-                      style: new TextStyle(color: Colors.blueGrey[50]),
-                    ),
-                    currentAccountPicture: new CircleAvatar(
-                        backgroundColor: Colors.brown, child: new Text("FL")),
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: new Text('My Profiles'),
-                    onTap: () {
-                      this.setState(() {
-                        var screen = 1;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.center_focus_strong),
-                    title: new Text('KBZpay QR Code'),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: ( BuildContext context ) => new qr()));
-                    },
-                  ),
-                  new ListTile(
-                    leading: Icon(Icons.error_outline),
-                    title: new Text('Terms & Regulations'),
-                    onTap: () {
-                      this.setState(() {
-                        var screen = 0;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ),
-                  new Divider(),
-                  new ListTile(
-                    leading: Icon(Icons.power_settings_new),
-                    title: new Text('Logout'),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ]
-                ),
-              ],
-            )
-        ),
+            child: ListView(children: <Widget>[
+          new Column(children: <Widget>[
+            new UserAccountsDrawerHeader(
+              accountName: new Text("$username",
+                  style: new TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0)),
+              accountEmail: new Text(
+                "firstname@lastname.com",
+                style: new TextStyle(color: Colors.blueGrey[50]),
+              ),
+              currentAccountPicture: new CircleAvatar(
+                  backgroundColor: Colors.brown, child: new Text("FL")),
+            ),
+            new ListTile(
+              leading: Icon(Icons.account_circle),
+              title: new Text('My Profiles'),
+              onTap: () {
+                this.setState(() {
+                  var screen = 1;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            new ListTile(
+              leading: Icon(Icons.center_focus_strong),
+              title: new Text('KBZpay QR Code'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new qr()));
+              },
+            ),
+            new ListTile(
+              leading: Icon(Icons.error_outline),
+              title: new Text('Terms & Regulations'),
+              onTap: () {
+                this.setState(() {
+                  var screen = 0;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            new SwitchSettingsTile(
+              settingKey: 'ThemeKey',
+              title: 'Dark Mode',
+              subtitle: 'Dark Mode On',
+              subtitleIfOff: 'Dark Mode Off',
+            ),
+            new Divider(),
+            new ListTile(
+              leading: Icon(Icons.power_settings_new),
+              title: new Text('Logout'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ]),
+        ])),
         resizeToAvoidBottomPadding: false,
         body: SingleChildScrollView(
           child: new Form(
@@ -229,10 +245,10 @@ class _State extends State<Form2> {
                             color: Colors.white24,
                             border: Border.all(color: Colors.white, width: 2),
                           ),
-                          child:DropdownButton<String>(
+                          child: DropdownButton<String>(
                               hint: Text('(နိုင်)'),
                               onChanged: (String changedValue) {
-                                newValue=changedValue;
+                                newValue = changedValue;
                                 setState(() {
                                   newValue;
                                   print(newValue);
@@ -265,10 +281,8 @@ class _State extends State<Form2> {
                               }
                             },
                           ),
-
                         ),
                       ),
-
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -311,7 +325,6 @@ class _State extends State<Form2> {
                               textColor: Colors.white,
                               textFontWeight: FontWeight.bold,
                               onPressed: _back,
-
                             ),
                             KRaisedButton(
                               radius: 30.0,
@@ -320,7 +333,6 @@ class _State extends State<Form2> {
                               textColor: Colors.white,
                               textFontWeight: FontWeight.bold,
                               onPressed: _submit,
-
                             ),
                           ],
                         )
@@ -333,7 +345,6 @@ class _State extends State<Form2> {
           ),
         ));
   }
-
 
   void _back() {
     if (_formKey.currentState.validate()) {
@@ -365,5 +376,4 @@ class _State extends State<Form2> {
   void _onSelectedCodeName(String value) {
     setState(() => _selectedCodeName = value);
   }
-
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData buildThemeData() {
+
   return ThemeData(
+
     brightness: Brightness.light,
     primaryColor: Colors.teal,
     accentColor: Colors.white,
