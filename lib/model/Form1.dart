@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/model/Form3.dart';
@@ -68,7 +70,7 @@ class _State extends State<Form1> {
   Widget build(BuildContext context){
   return MaterialApp(
   debugShowCheckedModeBanner: false,
-  theme: darkThemeEnabled ? buildThemeDataDark() : buildThemeData(),
+  theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
         home: home());
 }
   @override
@@ -592,6 +594,7 @@ class _State extends State<Form1> {
         "metriYear": metriYear.text,
         "metriDept": metriDept.text,
       });
+
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
         return new Form3();

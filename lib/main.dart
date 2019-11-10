@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_app/model/raised_button.dart';
+
 import 'ThemeData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -124,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: "Username",
                   prefixIcon: const Icon(
                     Icons.person,
-                    color: Colors.green,
                   ),
                   fillColor: Colors.black,
                   border: new OutlineInputBorder(
@@ -155,7 +156,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: "Password",
                   prefixIcon: const Icon(
                     Icons.remove_red_eye,
-                    color: Colors.green,
                   ),
                   fillColor: Colors.black,
                   border: new OutlineInputBorder(
@@ -175,17 +175,13 @@ class _MyHomePageState extends State<MyHomePage> {
 //                child: Text('Hello World!'),
               ),
 
-              RaisedButton(
-                child: Text("Login"),
-
-//                color: Colors.transparent,
+              KRaisedButton(
+                radius: 30.0,
+                color: Colors.teal,
+                text: 'Login',
                 textColor: Colors.white,
-                color: Colors.red,
-//                padding: const EdgeInsets.all(10.0),
-                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-                onPressed: () {
-                  _login();
-                },
+                textFontWeight: FontWeight.bold,
+                onPressed: _login,
               ),
 
               Text(
