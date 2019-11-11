@@ -35,7 +35,6 @@ ThemeData buildThemeData() {
 ThemeData buildThemeDataDark() {
 
   return ThemeData(
-
     brightness: Brightness.light,
     primaryColor: Colors.teal,
     accentColor: Colors.black12,
@@ -65,6 +64,7 @@ ThemeData buildThemeDataDark() {
       ),
     ),
   );
+
 }
 const SystemUiOverlayStyle lightSystemUiOverlayStyle = SystemUiOverlayStyle(
   statusBarColor: Colors.white30,

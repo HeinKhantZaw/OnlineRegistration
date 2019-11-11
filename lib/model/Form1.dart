@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/model/Form3.dart';
@@ -57,520 +58,573 @@ class _State extends State<Form1> {
   List<String> _codes = [".."];
   List<String> _codeNames = [".."];
   String _selectedCode;
-
   String _selectedCodeName;
   String newValue;
+  String _errorText = '';
 
   @override
   void initState() {
     _codes = List.from(_codes)..addAll(nrc.getCodes());
     super.initState();
   }
+
   @override
-  Widget build(BuildContext context){
-  return MaterialApp(
-  debugShowCheckedModeBanner: false,
-  theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: darkThemeEnabled ? buildThemeDataDark() : buildThemeData(),
         home: home());
-}
-  @override
-  Widget home()  {
-    return Scaffold(
-        appBar: AppBar(title: Text('Student Registration')),
-        endDrawer: new Drawer(
-            child: new Column(children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountName: new Text("$username",
-                style: new TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0)),
-            accountEmail: new Text(
-              "firstname@lastname.com",
-              style: new TextStyle(color: Colors.blueGrey[50]),
-            ),
-            currentAccountPicture: new CircleAvatar(
-                backgroundColor: Colors.brown, child: new Text("FL")),
-          ),
-          new ListTile(
-            leading: Icon(Icons.account_circle),
-            title: new Text('My Profiles'),
-            onTap: () {
-              this.setState(() {
-                var screen = 1;
-              });
-              Navigator.pop(context);
-            },
-          ),
-          new ListTile(
-            leading: Icon(Icons.center_focus_strong),
-            title: new Text('KBZpay QR Code'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (BuildContext context) => new qr()));
-            },
-          ),
-          new ListTile(
-            leading: Icon(Icons.error_outline),
-            title: new Text('Terms & Regulations'),
-            onTap: () {
-              this.setState(() {
-                var screen = 0;
-              });
-              Navigator.pop(context);
-            },
-          ),
-              new ListTile(
-                title: Text("Dark Theme"),
-                trailing: Switch(
-                  value: darkThemeEnabled,
-                  onChanged: (changedTheme) {
-                    setState(() {
-                      darkThemeEnabled = changedTheme;
-                    });
-                  },
-                ),
-              ),
-          new Divider(),
-          new ListTile(
-            leading: Icon(Icons.power_settings_new),
-            title: new Text('Logout'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ])),
-        body: SingleChildScrollView(
-          child: new Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextFormField(
-                    controller: engName,
-                    decoration: InputDecoration(
-                      labelText: 'အမည်(English လို)',
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'အမည်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: mmName,
-                    decoration: InputDecoration(
-                      labelText: 'အမည်(Myanmar လို)',
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'အမည်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: roll,
-                    decoration: InputDecoration(
-                      labelText: 'ခုံနံပါတ်',
-                      prefixIcon: Icon(Icons.info),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ခုံနံပါတ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: uniID,
-                    decoration: InputDecoration(
-                      labelText: 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်',
-                      prefixIcon: Icon(Icons.book),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: uniStart,
-                    decoration: InputDecoration(
-                      labelText: 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်',
-                      prefixIcon: Icon(Icons.today),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: ethnic,
-                    decoration: InputDecoration(
-                      labelText: 'လူမျိုး',
-                      prefixIcon: Icon(Icons.sentiment_very_satisfied),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'လူမျိုးထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: religion,
-                    decoration: InputDecoration(
-                      labelText: 'ကိုးကွယ်သည့်ဘာသာ',
-                      prefixIcon: Icon(Icons.info),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ဘာသာထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: birthPlace,
-                    decoration: InputDecoration(
-                      labelText: 'မွေးဖွားရာဇာတိ',
-                      prefixIcon: Icon(Icons.room),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ဇာတိထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: township,
-                    decoration: InputDecoration(
-                      labelText: 'မြို့နယ်',
-                      prefixIcon: Icon(Icons.room),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'မြို့နယ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: division,
-                    decoration: InputDecoration(
-                      labelText: 'ပြည်နယ်/တိုင်းဒေသကြီး',
-                      prefixIcon: Icon(Icons.room),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text('မှတ်ပုံတင်အမှတ်'),
-                  const SizedBox(height: 8.0),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          // use this to match the Flex size..., is like using Expanded.
-                          width: double.infinity,
-                          // container defines the BoxConstrains of the children
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            border: Border.all(color: Colors.white, width: 1),
-                          ),
+  }
 
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text('၁၂/'),
-                            items: _codes.map((String dropDownStringItem) {
-                              return DropdownMenuItem<String>(
-                                value: dropDownStringItem,
-                                child: Text(dropDownStringItem),
-                              );
-                            }).toList(),
-                            onChanged: (value) => _onSelectedCode(value),
-                            value: _selectedCode,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          // use this to match the Flex size..., is like using Expanded.
-                          width: double.infinity,
-                          // container defines the BoxConstrains of the children
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            hint: Text('မဂတ'),
-                            items: _codeNames.map((String dropDownStringItem) {
-                              return DropdownMenuItem<String>(
-                                value: dropDownStringItem,
-                                child: Text(dropDownStringItem),
-                              );
-                            }).toList(),
-                            // onChanged: (value) => print(value),
-                            onChanged: (value) => _onSelectedCodeName(value),
-                            value: _selectedCodeName,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          // use this to match the Flex size..., is like using Expanded.
-                          width: double.infinity,
-                          // container defines the BoxConstrains of the children
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: DropdownButton<String>(
-                              hint: Text('(နိုင်)'),
-                              onChanged: (String changedValue) {
-                                newValue = changedValue;
-                                setState(() {
-                                  newValue;
-                                  print(newValue);
-                                });
-                              },
-                              value: newValue,
-                              items: <String>['(နိုင်)', '(ဧည့်)', '(ပြု)']
-                                  .map((String value) {
-                                return new DropdownMenuItem<String>(
-                                  value: value,
-                                  child: new Text(value),
-                                );
-                              }).toList()),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Container(
-                          // use this to match the Flex size..., is like using Expanded.
-                          width: double.infinity,
-                          // container defines the BoxConstrains of the children
-
-                          child: TextFormField(
+  Widget home() {
+    return SafeArea(
+      top: false,
+      child: Stack(
+        children: <Widget>[
+          Align(
+            child: Scaffold(
+                appBar: AppBar(title: Text('Student Registration')),
+                endDrawer: new Drawer(
+                    child: new Column(children: <Widget>[
+                  new UserAccountsDrawerHeader(
+                    accountName: new Text("$username",
+                        style: new TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0)),
+                    accountEmail: new Text(
+                      "firstname@lastname.com",
+                      style: new TextStyle(color: Colors.blueGrey[50]),
+                    ),
+                    currentAccountPicture: new CircleAvatar(
+                        backgroundColor: Colors.brown, child: new Text("FL")),
+                  ),
+                  new ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: new Text('My Profiles'),
+                    onTap: () {
+                      this.setState(() {
+                        var screen = 1;
+                      });
+                      Navigator.pop(context);
+                    },
+                  ),
+                  new ListTile(
+                    leading: Icon(Icons.center_focus_strong),
+                    title: new Text('KBZpay QR Code'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (BuildContext context) => new qr()));
+                    },
+                  ),
+                  new ListTile(
+                    leading: Icon(Icons.error_outline),
+                    title: new Text('Terms & Regulations'),
+                    onTap: () {
+                      this.setState(() {
+                        var screen = 0;
+                      });
+                      Navigator.pop(context);
+                    },
+                  ),
+                  new ListTile(
+                    title: Text("Dark Theme"),
+                    trailing: Switch(
+                      value: darkThemeEnabled,
+                      onChanged: (changedTheme) {
+                        setState(() {
+                          darkThemeEnabled = changedTheme;
+                        });
+                      },
+                    ),
+                  ),
+                  new Divider(),
+                  new ListTile(
+                    leading: Icon(Icons.power_settings_new),
+                    title: new Text('Logout'),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ])),
+                body: SingleChildScrollView(
+                  child: new Form(
+                    key: _formKey,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFormField(
+                            controller: engName,
                             decoration: InputDecoration(
-                              hintText: '၁၁၀၂၀၃',
+                              labelText: 'အမည်(English လို)',
+                              prefixIcon: Icon(Icons.person),
                             ),
                             validator: (String value) {
                               if (value.trim().isEmpty) {
-                                return 'မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
+                                return 'အမည်ထည့်ရန်လိုသည်';
                               }
                             },
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: birthday,
-                    decoration: InputDecoration(
-                      labelText: 'မွေးသက္ကရာဇ်',
-                      prefixIcon: Icon(Icons.event),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: livingAddress,
-                    decoration: InputDecoration(
-                      labelText: 'သင်အမြဲတမ်းနေထိုင်သည့်လိပ်စာ',
-                      prefixIcon: Icon(Icons.add_location),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'လိပ်စာထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: fatherName,
-                    decoration: InputDecoration(
-                      labelText: 'အဘအုပ်ထိန်းသူ၏မြန်မာနာမည်',
-                      prefixIcon: Icon(Icons.business_center),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: fatherJob,
-                    decoration: InputDecoration(
-                      labelText: 'အဘအုပ်ထိန်းသူ၏အလုပ်အကိုင်၊ရာထူး၊ဌာန',
-                      prefixIcon: Icon(Icons.business_center),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: fatherAddress,
-                    decoration: InputDecoration(
-                      labelText: 'အဘအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
-                      prefixIcon: Icon(Icons.add_location),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'လိပ်စာထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: motherName,
-                    decoration: InputDecoration(
-                      labelText: 'အမိအုပ်ထိန်းသူ၏မြန်မာနာမည်',
-                      prefixIcon: Icon(Icons.business_center),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: motherJob,
-                    decoration: InputDecoration(
-                      labelText: 'အမိအုပ်ထိန်းသူ၏အလုပ်အကိုင်ရာထူး၊ဌာန',
-                      prefixIcon: Icon(Icons.business_center),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: motherAddress,
-                    decoration: InputDecoration(
-                      labelText: 'အမိအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
-                      prefixIcon: Icon(Icons.add_location),
-                    ),
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'လိပ်စာထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: metriRoll,
-                    decoration: InputDecoration(
-                      labelText: 'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
-                      prefixIcon: Icon(Icons.book),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ခုံအမှတ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: metriYear,
-                    decoration: InputDecoration(
-                      labelText: 'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
-                      prefixIcon: Icon(Icons.calendar_today),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'ခုနှစ်ထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: metriDept,
-                    decoration: InputDecoration(
-                      labelText: 'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
-                      prefixIcon: Icon(Icons.business),
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (String value) {
-                      if (value.trim().isEmpty) {
-                        return 'စာစစ်ဌာနထည့်ရန်လိုသည်';
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            KRaisedButton(
-                              radius: 30.0,
-                              color: Colors.teal,
-                              text: 'Next',
-                              textColor: Colors.white,
-                              textFontWeight: FontWeight.bold,
-                              onPressed: _submit,
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: mmName,
+                            decoration: InputDecoration(
+                              labelText: 'အမည်(Myanmar လို)',
+                              prefixIcon: Icon(Icons.person),
                             ),
-                          ],
-                        )
-                      ],
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'အမည်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: roll,
+                            decoration: InputDecoration(
+                              labelText: 'ခုံနံပါတ်',
+                              prefixIcon: Icon(Icons.info),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ခုံနံပါတ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: uniID,
+                            decoration: InputDecoration(
+                              labelText: 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်',
+                              prefixIcon: Icon(Icons.book),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: uniStart,
+                            decoration: InputDecoration(
+                              labelText: 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်',
+                              prefixIcon: Icon(Icons.today),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: ethnic,
+                            decoration: InputDecoration(
+                              labelText: 'လူမျိုး',
+                              prefixIcon: Icon(Icons.sentiment_very_satisfied),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'လူမျိုးထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: religion,
+                            decoration: InputDecoration(
+                              labelText: 'ကိုးကွယ်သည့်ဘာသာ',
+                              prefixIcon: Icon(Icons.info),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ဘာသာထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: birthPlace,
+                            decoration: InputDecoration(
+                              labelText: 'မွေးဖွားရာဇာတိ',
+                              prefixIcon: Icon(Icons.room),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ဇာတိထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: township,
+                            decoration: InputDecoration(
+                              labelText: 'မြို့နယ်',
+                              prefixIcon: Icon(Icons.room),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'မြို့နယ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: division,
+                            decoration: InputDecoration(
+                              labelText: 'ပြည်နယ်/တိုင်းဒေသကြီး',
+                              prefixIcon: Icon(Icons.room),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          Text('မှတ်ပုံတင်အမှတ်'),
+                          const SizedBox(height: 8.0),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  // use this to match the Flex size..., is like using Expanded.
+                                  width: double.infinity,
+                                  // container defines the BoxConstrains of the children
+                                  decoration: BoxDecoration(
+                                    color: Colors.white24,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1),
+                                  ),
+
+                                  child: InputDecorator(
+                                    decoration: InputDecoration(
+                                      errorText: _errorText,
+                                    ),
+                                    isEmpty: newValue == null,
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      hint: Text('၁၂/'),
+                                      items: _codes
+                                          .map((String dropDownStringItem) {
+                                        return DropdownMenuItem<String>(
+                                          value: dropDownStringItem,
+                                          child: Text(dropDownStringItem),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) =>
+                                          _onSelectedCode(value),
+                                      value: _selectedCode,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  // use this to match the Flex size..., is like using Expanded.
+                                  width: double.infinity,
+                                  // container defines the BoxConstrains of the children
+                                  decoration: BoxDecoration(
+                                    color: Colors.white24,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                  ),
+                                  child: InputDecorator(
+                                    decoration: InputDecoration(
+                                      errorText: _errorText,
+                                    ),
+                                    isEmpty: newValue == null,
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      hint: Text('မဂတ'),
+                                      items: _codeNames
+                                          .map((String dropDownStringItem) {
+                                        return DropdownMenuItem<String>(
+                                          value: dropDownStringItem,
+                                          child: Text(dropDownStringItem),
+                                        );
+                                      }).toList(),
+                                      // onChanged: (value) => print(value),
+                                      onChanged: (value) =>
+                                          _onSelectedCodeName(value),
+                                      value: _selectedCodeName,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  // use this to match the Flex size..., is like using Expanded.
+                                  width: double.infinity,
+                                  // container defines the BoxConstrains of the children
+                                  decoration: BoxDecoration(
+                                    color: Colors.white24,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                  ),
+                                  child: InputDecorator(
+                                    decoration: InputDecoration(
+                                      errorText: _errorText,
+                                    ),
+                                    isEmpty: newValue == null,
+                                  child: DropdownButton<String>(
+                                    hint: Text('(နိုင်)'),
+                                    value: newValue,
+                                    items: <String>[
+                                      '(နိုင်)',
+                                      '(ဧည့်)',
+                                      '(ပြု)'
+                                    ].map((String value) {
+                                      return new DropdownMenuItem<String>(
+                                        value: value,
+                                        child: new Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String changedValue) {
+                                      newValue = changedValue;
+                                      setState(() {
+                                        newValue;
+                                        print(newValue);
+                                      });
+                                    },
+                                  ),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: Container(
+                                  // use this to match the Flex size..., is like using Expanded.
+                                  width: double.infinity,
+                                  // container defines the BoxConstrains of the children
+
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: '၁၁၀၂၀၃',
+                                    ),
+                                    validator: (String value) {
+                                      if (value.trim().isEmpty) {
+                                        return 'မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: birthday,
+                            decoration: InputDecoration(
+                              labelText: 'မွေးသက္ကရာဇ်',
+                              prefixIcon: Icon(Icons.event),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: livingAddress,
+                            decoration: InputDecoration(
+                              labelText: 'သင်အမြဲတမ်းနေထိုင်သည့်လိပ်စာ',
+                              prefixIcon: Icon(Icons.add_location),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'လိပ်စာထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: fatherName,
+                            decoration: InputDecoration(
+                              labelText: 'အဘအုပ်ထိန်းသူ၏မြန်မာနာမည်',
+                              prefixIcon: Icon(Icons.business_center),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: fatherJob,
+                            decoration: InputDecoration(
+                              labelText: 'အဘအုပ်ထိန်းသူ၏အလုပ်အကိုင်၊ရာထူး၊ဌာန',
+                              prefixIcon: Icon(Icons.business_center),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: fatherAddress,
+                            decoration: InputDecoration(
+                              labelText: 'အဘအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
+                              prefixIcon: Icon(Icons.add_location),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'လိပ်စာထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: motherName,
+                            decoration: InputDecoration(
+                              labelText: 'အမိအုပ်ထိန်းသူ၏မြန်မာနာမည်',
+                              prefixIcon: Icon(Icons.business_center),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: motherJob,
+                            decoration: InputDecoration(
+                              labelText: 'အမိအုပ်ထိန်းသူ၏အလုပ်အကိုင်ရာထူး၊ဌာန',
+                              prefixIcon: Icon(Icons.business_center),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: motherAddress,
+                            decoration: InputDecoration(
+                              labelText: 'အမိအုပ်ထိန်းသူ၏နေရပ်လိပ်စာ',
+                              prefixIcon: Icon(Icons.add_location),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'လိပ်စာထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: metriRoll,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
+                              prefixIcon: Icon(Icons.book),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ခုံအမှတ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: metriYear,
+                            decoration: InputDecoration(
+                              labelText: 'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
+                              prefixIcon: Icon(Icons.calendar_today),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ခုနှစ်ထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: metriDept,
+                            decoration: InputDecoration(
+                              labelText:
+                                  'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
+                              prefixIcon: Icon(Icons.business),
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'စာစစ်ဌာနထည့်ရန်လိုသည်';
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                new Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    KRaisedButton(
+                                      radius: 30.0,
+                                      color: Colors.teal,
+                                      text: 'Next',
+                                      textColor: Colors.white,
+                                      textFontWeight: FontWeight.bold,
+                                      onPressed: _submit,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
+                )),
           ),
-        ));
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConnectionStatusBar(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _validateForm() {
+    bool _isValid = _formKey.currentState.validate();
+
+    if (_selectedCodeName == null || _selectedCode == null) {
+      _isValid = false;
+    }
+    return _isValid;
   }
 
   void _submit() async {
-    if (_formKey.currentState.validate()) {
+    if (_validateForm()) {
       await http.post("https://unireg.000webhostapp.com//insert.php", body: {
         "mmName": mmName.text,
         "engName": engName.text,
@@ -594,7 +648,6 @@ class _State extends State<Form1> {
         "metriYear": metriYear.text,
         "metriDept": metriDept.text,
       });
-
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
         return new Form3();
@@ -612,6 +665,8 @@ class _State extends State<Form1> {
   }
 
   void _onSelectedCodeName(String value) {
-    setState(() => _selectedCodeName = value);
+    setState(() {
+      _selectedCodeName = value;
+    });
   }
 }
