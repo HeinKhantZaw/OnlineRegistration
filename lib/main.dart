@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
         '/AdminPage': (BuildContext context) => new MemberPage(
-              username: username,
-            ),
+          username: username,
+        ),
         '/MemberPage': (BuildContext context) => new Form1(username: username),
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
       },
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List> _login() async {
     final response =
-        await http.post("https://unireg.000webhostapp.com//get.php", body: {
+    await http.post("https://unireg.000webhostapp.com//get.php", body: {
       "Name": user.text,
       "NRC": pass.text,
     });

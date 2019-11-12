@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ThemeData.dart';
 import 'package:flutter_app/main.dart';
+import 'package:flutter_app/model/Form1.dart';
 import '../setting/shared_preferences_settings.dart';
 import '../widgets/widgets.dart';
-import 'Form3.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
 import 'package:http/http.dart' as http;
@@ -220,7 +220,7 @@ class _State extends State<Form4> {
     if (_formKey.currentState.validate()) {
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return new Form3();
+        return new Form1();
       }));
     }
   }
