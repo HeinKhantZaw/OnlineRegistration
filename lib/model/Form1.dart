@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/model/Form4.dart';
 import 'package:flutter_app/model/qr.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import 'qr.dart';
@@ -60,10 +61,17 @@ class _State extends State<Form1> {
   String _selectedCode;
   String _selectedCodeName;
   String newValue;
+  String _date = "မွေးသက္ကရာဇ်";
+  List _bloods = ["အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး"];
+  final List<String> _dropdownValues = [ "အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး" ];
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
+  String _selectedBlood;
 
   @override
   void initState() {
     _codes = List.from(_codes)..addAll(nrc.getCodes());
+    _dropDownMenuItems = buildAndGetDropDownMenuItems(_bloods);
+    _selectedBlood = _dropDownMenuItems[0].value;
     super.initState();
   }
 
@@ -393,19 +401,90 @@ class _State extends State<Form1> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16.0),
-                            TextFormField(
-                              controller: birthday,
-                              decoration: InputDecoration(
-                                labelText: 'မွေးသက္ကရာဇ်',
-                                prefixIcon: Icon(Icons.event),
-                              ),
-                              validator: (String value) {
-                                if (value.trim().isEmpty) {
-                                  return 'ထည့်ရန်လိုသည်';
-                                }
-                              },
+                        const SizedBox(height: 16.0),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          elevation: 1.0,
+                          onPressed: () {
+                            DatePicker.showDatePicker(context,
+                                theme: DatePickerTheme(
+                                  containerHeight: 210.0,
+                                ),
+                                showTitleActions: true,
+                                minTime: DateTime(1997, 1, 1),
+                                maxTime: DateTime(2022, 12, 31),
+                                onConfirm: (date) {
+                                  print('confirm $date');
+                                  _date = '${date.year} - ${date.month} - ${date.day}';
+                                  setState(() {});
+                                },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 50.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.date_range,
+                                            size: 18.0,
+
+                                          ),
+
+                                          Text(
+                                            " $_date",
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                              ],
                             ),
+                          ),
+                          color: Colors.white,
+                        ),
+
+                        const SizedBox(height: 16.0),
+                            Row(
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+//                    mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(padding: EdgeInsets.only(left: 12.5),
+                                    child: Icon(Icons.favorite)
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 15.0),
+                                    child: Text("သွေးအမျိုးအစား",  style: new TextStyle( fontSize: 16.5, color: Colors.black))
+                                ),
+
+                                Padding(
+                                    padding: EdgeInsets.only(left: 50.0),
+
+                                    child: DropdownButton(
+                                      items: _dropDownMenuItems,
+                                      value: _selectedBlood,
+                                      onChanged: changedDropDownItem,
+                                      isExpanded: false,
+                                      hint: Text("အိုသွေး"),
+
+                                    )
+                                ),
+                              ],
+                            ),
+
                             const SizedBox(height: 16.0),
                             TextFormField(
                               controller: livingAddress,
@@ -617,7 +696,7 @@ class _State extends State<Form1> {
         "fatherAddress": fatherAddress.text,
         "motherName": motherName.text,
         "motherAddress": motherAddress.text,
-        "birthday": birthday.text,
+        "birthday": _date,
         "livingAddress": livingAddress.text,
         "fatherJob": fatherJob.text,
         "motherJob": motherJob.text,
@@ -645,5 +724,18 @@ class _State extends State<Form1> {
     setState(() {
       _selectedCodeName = value;
     });
+  }
+  void changedDropDownItem(String selectedBlood) {
+    setState(() {
+      _selectedBlood = selectedBlood;
+    });
+  }
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List bloods) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String blood in bloods) {
+      items.add(DropdownMenuItem(value: blood, child: Text(blood)));
+    }
+    return items;
   }
 }
