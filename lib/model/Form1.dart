@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
@@ -29,32 +27,48 @@ class _State extends State<Form1> {
   bool darkThemeEnabled = false;
   var date1 = DateTime.parse("2019-11-30 23:59:59");
   DateTime date2 = new DateTime.now();
+
   TextEditingController mmName = new TextEditingController();
   TextEditingController engName = new TextEditingController();
   TextEditingController roll = new TextEditingController();
   TextEditingController uniID = new TextEditingController();
   TextEditingController uniStart = new TextEditingController();
   TextEditingController ethnic = new TextEditingController();
+  TextEditingController fatherEthnic = new TextEditingController();
+  TextEditingController motherEthnic = new TextEditingController();
   TextEditingController religion = new TextEditingController();
+  TextEditingController fatherReligion = new TextEditingController();
+  TextEditingController motherReligion = new TextEditingController();
   TextEditingController birthPlace = new TextEditingController();
+  TextEditingController fatherBirthPlace = new TextEditingController();
+  TextEditingController motherBirthPlace = new TextEditingController();
   TextEditingController township = new TextEditingController();
-  TextEditingController division = new TextEditingController();
+  TextEditingController fatherTownship = new TextEditingController();
+  TextEditingController motherTownship = new TextEditingController();
   TextEditingController fatherName = new TextEditingController();
   TextEditingController fatherAddress = new TextEditingController();
   TextEditingController motherName = new TextEditingController();
   TextEditingController motherAddress = new TextEditingController();
+  TextEditingController motherPhone = new TextEditingController();
+  TextEditingController fatherPhone = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
   TextEditingController birthday = new TextEditingController();
+  TextEditingController nrcNum = new TextEditingController();
   TextEditingController livingAddress = new TextEditingController();
   TextEditingController fatherJob = new TextEditingController();
   TextEditingController motherJob = new TextEditingController();
-  TextEditingController metriRoll = new TextEditingController();
-  TextEditingController metriYear = new TextEditingController();
-  TextEditingController metriDept = new TextEditingController();
+  TextEditingController matriculationRoll = new TextEditingController();
+  TextEditingController matriculationYear = new TextEditingController();
+  TextEditingController matriculationDept = new TextEditingController();
   TextEditingController providerName = new TextEditingController();
   TextEditingController relationship = new TextEditingController();
   TextEditingController providerJob = new TextEditingController();
   TextEditingController providerAddress = new TextEditingController();
   TextEditingController providerPhoneNum = new TextEditingController();
+  TextEditingController fatherPosition = new TextEditingController();
+  TextEditingController motherPosition = new TextEditingController();
+  TextEditingController fatherDept = new TextEditingController();
+  TextEditingController motherDept = new TextEditingController();
 
   List<String> _codes = [".."];
   List<String> _codeNames = [".."];
@@ -63,9 +77,15 @@ class _State extends State<Form1> {
   String newValue;
   String _date = "မွေးသက္ကရာဇ်";
   List _bloods = ["အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး"];
-  final List<String> _dropdownValues = [ "အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး" ];
+  final List<String> _dropdownValues = [
+    "အိုသွေး",
+    "အေသွေး",
+    "ဘီသွေး",
+    "အေဘီသွေး"
+  ];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _selectedBlood;
+  String _NRC;
 
   @override
   void initState() {
@@ -237,7 +257,35 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: ethnic,
                               decoration: InputDecoration(
-                                labelText: 'လူမျိုး',
+                                labelText: 'လူမျိုး (မိမိ)',
+                                prefixIcon:
+                                    Icon(Icons.sentiment_very_satisfied),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'လူမျိုးထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherEthnic,
+                              decoration: InputDecoration(
+                                labelText: 'လူမျိုး (အဘ)',
+                                prefixIcon:
+                                    Icon(Icons.sentiment_very_satisfied),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'လူမျိုးထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherEthnic,
+                              decoration: InputDecoration(
+                                labelText: 'လူမျိုး (အမိ)',
                                 prefixIcon:
                                     Icon(Icons.sentiment_very_satisfied),
                               ),
@@ -251,7 +299,33 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: religion,
                               decoration: InputDecoration(
-                                labelText: 'ကိုးကွယ်သည့်ဘာသာ',
+                                labelText: 'ကိုးကွယ်သည့်ဘာသာ (မိမိ)',
+                                prefixIcon: Icon(Icons.info),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဘာသာထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherReligion,
+                              decoration: InputDecoration(
+                                labelText: 'ကိုးကွယ်သည့်ဘာသာ (အဘ)',
+                                prefixIcon: Icon(Icons.info),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဘာသာထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherReligion,
+                              decoration: InputDecoration(
+                                labelText: 'ကိုးကွယ်သည့်ဘာသာ (အမိ)',
                                 prefixIcon: Icon(Icons.info),
                               ),
                               validator: (String value) {
@@ -264,7 +338,33 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: birthPlace,
                               decoration: InputDecoration(
-                                labelText: 'မွေးဖွားရာဇာတိ',
+                                labelText: 'မွေးဖွားရာဇာတိ (မိမိ)',
+                                prefixIcon: Icon(Icons.room),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဇာတိထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherBirthPlace,
+                              decoration: InputDecoration(
+                                labelText: 'မွေးဖွားရာဇာတိ (အဘ)',
+                                prefixIcon: Icon(Icons.room),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဇာတိထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherBirthPlace,
+                              decoration: InputDecoration(
+                                labelText: 'မွေးဖွားရာဇာတိ (အမိ)',
                                 prefixIcon: Icon(Icons.room),
                               ),
                               validator: (String value) {
@@ -277,8 +377,8 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: township,
                               decoration: InputDecoration(
-                                labelText: 'မြို့နယ်',
-                                prefixIcon: Icon(Icons.room),
+                                labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း (မိမိ)',
+                                prefixIcon: Icon(Icons.edit_location),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -288,14 +388,69 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: division,
+                              controller: fatherTownship,
                               decoration: InputDecoration(
-                                labelText: 'ပြည်နယ်/တိုင်းဒေသကြီး',
-                                prefixIcon: Icon(Icons.room),
+                                labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း (အဘ)',
+                                prefixIcon: Icon(Icons.edit_location),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherTownship,
+                              decoration: InputDecoration(
+                                labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း (အမိ)',
+                                prefixIcon: Icon(Icons.edit_location),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: phone,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'ဖုန်းနံပါတ် (မိမိ)',
+                                prefixIcon: Icon(Icons.phone),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherPhone,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'ဖုန်းနံပါတ် (အဘ)',
+                                prefixIcon: Icon(Icons.phone),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherPhone,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: 'ဖုန်းနံပါတ် (အမိ)',
+                                prefixIcon: Icon(Icons.phone),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
                                 }
                               },
                             ),
@@ -388,6 +543,7 @@ class _State extends State<Form1> {
                                     // container defines the BoxConstrains of the children
 
                                     child: TextFormField(
+                                      controller: nrcNum,
                                       decoration: InputDecoration(
                                         hintText: '၁၁၀၂၀၃',
                                       ),
@@ -401,90 +557,86 @@ class _State extends State<Form1> {
                                 ),
                               ],
                             ),
-                        const SizedBox(height: 16.0),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          elevation: 1.0,
-                          onPressed: () {
-                            DatePicker.showDatePicker(context,
-                                theme: DatePickerTheme(
-                                  containerHeight: 210.0,
-                                ),
-                                showTitleActions: true,
-                                minTime: DateTime(1997, 1, 1),
-                                maxTime: DateTime(2022, 12, 31),
-                                onConfirm: (date) {
+                            const SizedBox(height: 16.0),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              elevation: 1.0,
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    theme: DatePickerTheme(
+                                      containerHeight: 210.0,
+                                    ),
+                                    showTitleActions: true,
+                                    minTime: DateTime(1997, 1, 1),
+                                    maxTime: DateTime(2022, 12, 31),
+                                    onConfirm: (date) {
                                   print('confirm $date');
-                                  _date = '${date.year} - ${date.month} - ${date.day}';
+                                  _date =
+                                      '${date.year} - ${date.month} - ${date.day}';
                                   setState(() {});
                                 },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.en);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 50.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.en);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50.0,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.date_range,
-                                            size: 18.0,
-
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.date_range,
+                                                size: 18.0,
+                                              ),
+                                              Text(
+                                                " $_date",
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18.0),
+                                              ),
+                                            ],
                                           ),
-
-                                          Text(
-                                            " $_date",
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18.0),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-
-                              ],
+                              ),
+                              color: Colors.white,
                             ),
-                          ),
-                          color: Colors.white,
-                        ),
-
-                        const SizedBox(height: 16.0),
+                            const SizedBox(height: 16.0),
                             Row(
 //                    crossAxisAlignment: CrossAxisAlignment.center,
 //                    mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Padding(padding: EdgeInsets.only(left: 12.5),
-                                    child: Icon(Icons.favorite)
-                                ),
-                                Padding(padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("သွေးအမျိုးအစား",  style: new TextStyle( fontSize: 16.5, color: Colors.black))
-                                ),
-
+                                Padding(
+                                    padding: EdgeInsets.only(left: 12.5),
+                                    child: Icon(Icons.favorite)),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 15.0),
+                                    child: Text("သွေးအမျိုးအစား",
+                                        style: new TextStyle(
+                                            fontSize: 16.5,
+                                            color: Colors.black))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 50.0),
-
                                     child: DropdownButton(
                                       items: _dropDownMenuItems,
                                       value: _selectedBlood,
                                       onChanged: changedDropDownItem,
                                       isExpanded: false,
                                       hint: Text("အိုသွေး"),
-
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
-
                             const SizedBox(height: 16.0),
                             TextFormField(
                               controller: livingAddress,
@@ -516,14 +668,41 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: fatherJob,
                               decoration: InputDecoration(
-                                labelText:
-                                    'အဘအုပ်ထိန်းသူ၏အလုပ်အကိုင်၊ရာထူး၊ဌာန',
+                                labelText: 'အဘအုပ်ထိန်းသူ၏အလုပ်အကိုင်',
                                 prefixIcon: Icon(Icons.business_center),
                               ),
                               keyboardType: TextInputType.text,
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherPosition,
+                              decoration: InputDecoration(
+                                labelText: 'အဘအုပ်ထိန်းသူ၏ရာထူး',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherDept,
+                              decoration: InputDecoration(
+                                labelText: 'အဘအုပ်ထိန်းသူ၏အလုပ်ဌာန',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
                                 }
                               },
                             ),
@@ -558,8 +737,35 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: motherJob,
                               decoration: InputDecoration(
-                                labelText:
-                                    'အမိအုပ်ထိန်းသူ၏အလုပ်အကိုင်ရာထူး၊ဌာန',
+                                labelText: 'အမိအုပ်ထိန်းသူ၏အလုပ်အကိုင်',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherPosition,
+                              decoration: InputDecoration(
+                                labelText: 'အမိအုပ်ထိန်းသူ၏ရာထူး',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: motherDept,
+                              decoration: InputDecoration(
+                                labelText: 'အမိအုပ်ထိန်းသူ၏အလုပ်ဌာန',
                                 prefixIcon: Icon(Icons.business_center),
                               ),
                               keyboardType: TextInputType.text,
@@ -584,7 +790,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: metriRoll,
+                              controller: matriculationRoll,
                               decoration: InputDecoration(
                                 labelText:
                                     'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
@@ -599,7 +805,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: metriYear,
+                              controller: matriculationYear,
                               decoration: InputDecoration(
                                 labelText:
                                     'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
@@ -614,7 +820,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: metriDept,
+                              controller: matriculationDept,
                               decoration: InputDecoration(
                                 labelText:
                                     'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
@@ -681,6 +887,7 @@ class _State extends State<Form1> {
 
   void _submit() async {
     if (_validateForm()) {
+      _NRC = _selectedCode + _selectedCodeName + newValue + nrcNum.text;
       await http.post("https://unireg.000webhostapp.com//insert.php", body: {
         "mmName": mmName.text,
         "engName": engName.text,
@@ -688,21 +895,39 @@ class _State extends State<Form1> {
         "uniID": uniID.text,
         "uniStart": uniStart.text,
         "ethnic": ethnic.text,
+        "father_ethnic": fatherEthnic.text,
+        "mother_ethnic": motherEthnic.text,
         "religion": religion.text,
+        "father_religion": fatherReligion.text,
+        "mother_religion": motherReligion.text,
         "birthPlace": birthPlace.text,
+        "father_birthPlace": fatherBirthPlace.text,
+        "mother_birthPlace": motherBirthPlace.text,
+        "NRC": _NRC,
         "township": township.text,
-        "division": division.text,
+        "father_township": fatherTownship.text,
+        "mother_township": motherTownship.text,
+        "phone": phone.text,
+        "father_phone": fatherPhone.text,
+        "mother_phone": motherPhone.text,
         "fatherName": fatherName.text,
         "fatherAddress": fatherAddress.text,
         "motherName": motherName.text,
         "motherAddress": motherAddress.text,
-        "birthday": _date,
-        "livingAddress": livingAddress.text,
         "fatherJob": fatherJob.text,
+        "father_position": fatherPosition.text,
+        "father_dept": fatherDept.text,
         "motherJob": motherJob.text,
-        "metriRoll": metriRoll.text,
-        "metriYear": metriYear.text,
-        "metriDept": metriDept.text,
+        "father_birthPlace" : fatherBirthPlace.text,
+        "mother_birthPlace" : motherBirthPlace.text,
+        "mother_position": motherPosition.text,
+        "mother_dept": motherDept.text,
+        "birthday": _date,
+        "bloodType": _selectedBlood,
+        "livingAddress": livingAddress.text,
+        "metriRoll": matriculationRoll.text,
+        "metriYear": matriculationYear.text,
+        "metriDept": matriculationDept.text,
       });
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
@@ -725,6 +950,7 @@ class _State extends State<Form1> {
       _selectedCodeName = value;
     });
   }
+
   void changedDropDownItem(String selectedBlood) {
     setState(() {
       _selectedBlood = selectedBlood;
