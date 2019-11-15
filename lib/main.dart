@@ -7,8 +7,6 @@ import 'ThemeData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'AdminPage.dart';
-import 'MemberPage.dart';
 import 'model/Form1.dart';
 
 void main() => runApp(new MyApp());
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Login Localhost',
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
-        '/AdminPage': (BuildContext context) => new MemberPage(
+        '/AdminPage': (BuildContext context) => new Form1(
           username: username,
         ),
         '/MemberPage': (BuildContext context) => new Form1(username: username),

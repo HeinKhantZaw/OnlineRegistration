@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/MemberPage.dart';
 import 'package:flutter_app/main.dart';
 import '../widgets/widgets.dart';
-
-
 
 class qr extends StatefulWidget {
   const qr({Key key, String username}) : super(key: key);

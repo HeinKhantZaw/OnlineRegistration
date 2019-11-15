@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/model/Form4.dart';
 import 'package:flutter_app/model/qr.dart';
+import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
@@ -27,6 +28,7 @@ class _State extends State<Form1> {
   bool darkThemeEnabled = false;
   var date1 = DateTime.parse("2019-11-30 23:59:59");
   DateTime date2 = new DateTime.now();
+  burmeseRegEx regEx = new burmeseRegEx();
 
   TextEditingController mmName = new TextEditingController();
   TextEditingController engName = new TextEditingController();
@@ -84,7 +86,7 @@ class _State extends State<Form1> {
     "အေဘီသွေး"
   ];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
-  String _selectedBlood;
+  String _selectedBlood = "အိုသွေး";
   String _NRC;
 
   @override
@@ -99,7 +101,7 @@ class _State extends State<Form1> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: darkThemeEnabled ? buildThemeDataDark() : buildThemeData(),
+        theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
         home: home());
   }
 
@@ -196,7 +198,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'အမည်ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -207,9 +210,11 @@ class _State extends State<Form1> {
                                 prefixIcon: Icon(Icons.person),
                               ),
                               validator: (String value) {
-                                if (value.trim().isEmpty) {
-                                  return 'အမည်ထည့်ရန်လိုသည်';
-                                }
+                                if (value.trim().isEmpty ||
+                                    regEx.validateMmInput(value)) {
+                                  return 'Myanmar အမည်ထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -222,7 +227,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ခုံနံပါတ်ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -236,7 +242,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -250,7 +259,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -264,7 +274,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လူမျိုးထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -278,7 +291,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လူမျိုးထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -292,7 +308,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လူမျိုးထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -305,7 +324,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဘာသာထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -318,7 +340,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဘာသာထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -331,7 +356,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဘာသာထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -344,7 +372,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဇာတိထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -357,7 +386,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဇာတိထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -370,7 +400,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဇာတိထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -383,7 +414,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'မြို့နယ်ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -396,7 +428,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -409,7 +442,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -423,7 +457,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -437,7 +472,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -451,7 +487,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ဖုန်းနံပါတ် ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -459,6 +496,7 @@ class _State extends State<Form1> {
                             const SizedBox(height: 8.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
                                   flex: 2,
@@ -466,9 +504,7 @@ class _State extends State<Form1> {
                                     // use this to match the Flex size..., is like using Expanded.
                                     width: double.infinity,
                                     // container defines the BoxConstrains of the children
-
-                                    child: DropdownButton<String>(
-                                      isExpanded: true,
+                                    child: DropdownButtonFormField<String>(
                                       hint: Text('၁၂/'),
                                       items: _codes
                                           .map((String dropDownStringItem) {
@@ -477,6 +513,15 @@ class _State extends State<Form1> {
                                           child: Text(dropDownStringItem),
                                         );
                                       }).toList(),
+                                      validator: (String value) {
+                                        if (value?.isEmpty ?? true) {
+                                          return 'ထည့်ပါ';
+                                        } else if (_selectedCode
+                                            .contains('..')) {
+                                          return 'ထည့်ပါ';
+                                        } else
+                                          return null;
+                                      },
                                       onChanged: (value) =>
                                           _onSelectedCode(value),
                                       value: _selectedCode,
@@ -488,9 +533,9 @@ class _State extends State<Form1> {
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
                                     width: double.infinity,
+
                                     // container defines the BoxConstrains of the children
-                                    child: DropdownButton<String>(
-                                      isExpanded: true,
+                                    child: DropdownButtonFormField<String>(
                                       hint: Text('မဂတ'),
                                       items: _codeNames
                                           .map((String dropDownStringItem) {
@@ -499,6 +544,15 @@ class _State extends State<Form1> {
                                           child: Text(dropDownStringItem),
                                         );
                                       }).toList(),
+                                      validator: (String value) {
+                                        if (value?.isEmpty ?? true) {
+                                          return 'ထည့်ပါ';
+                                        } else if (_selectedCodeName
+                                            .contains('..')) {
+                                          return 'ထည့်ပါ';
+                                        } else
+                                          return null;
+                                      },
                                       // onChanged: (value) => print(value),
                                       onChanged: (value) =>
                                           _onSelectedCodeName(value),
@@ -512,7 +566,7 @@ class _State extends State<Form1> {
                                     // use this to match the Flex size..., is like using Expanded.
                                     width: double.infinity,
                                     // container defines the BoxConstrains of the children
-                                    child: DropdownButton<String>(
+                                    child: DropdownButtonFormField<String>(
                                       hint: Text('(နိုင်)'),
                                       value: newValue,
                                       items: <String>[
@@ -525,18 +579,21 @@ class _State extends State<Form1> {
                                           child: new Text(value),
                                         );
                                       }).toList(),
+                                      validator: (String value) {
+                                        if (value?.isEmpty ?? true) {
+                                          return 'ထည့်ပါ';
+                                        } else
+                                          return null;
+                                      },
                                       onChanged: (String changedValue) {
                                         newValue = changedValue;
-                                        setState(() {
-                                          newValue;
-                                          print(newValue);
-                                        });
+                                        setState(() {});
                                       },
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 3,
+                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
                                     width: double.infinity,
@@ -550,7 +607,11 @@ class _State extends State<Form1> {
                                       validator: (String value) {
                                         if (value.trim().isEmpty) {
                                           return 'မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                                        }
+                                        } else if (regEx
+                                            .validateMmNumberInput(value)) {
+                                          return 'မြန်မာလိုရေးရန်လိုသည်';
+                                        } else
+                                          return null;
                                       },
                                     ),
                                   ),
@@ -614,8 +675,8 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             Row(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    mainAxisAlignment: MainAxisAlignment.center,
+//                              crossAxisAlignment: CrossAxisAlignment.center,
+//                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
                                     padding: EdgeInsets.only(left: 12.5),
@@ -632,8 +693,7 @@ class _State extends State<Form1> {
                                       items: _dropDownMenuItems,
                                       value: _selectedBlood,
                                       onChanged: changedDropDownItem,
-                                      isExpanded: false,
-                                      hint: Text("အိုသွေး"),
+                                      hint: Text(_selectedBlood),
                                     )),
                               ],
                             ),
@@ -647,7 +707,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လိပ်စာထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -661,7 +722,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -675,7 +739,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -689,7 +754,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -703,7 +769,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -716,7 +783,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လိပ်စာထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -730,7 +798,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -744,7 +815,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -758,7 +830,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -772,7 +845,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -785,7 +859,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'လိပ်စာထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -800,7 +875,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ခုံအမှတ်ထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -815,7 +893,8 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'ခုနှစ်ထည့်ရန်လိုသည်';
-                                }
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -830,7 +909,10 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'စာစစ်ဌာနထည့်ရန်လိုသည်';
-                                }
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုရေးရန်လိုသည်';
+                                } else
+                                  return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
@@ -918,8 +1000,8 @@ class _State extends State<Form1> {
         "father_position": fatherPosition.text,
         "father_dept": fatherDept.text,
         "motherJob": motherJob.text,
-        "father_birthPlace" : fatherBirthPlace.text,
-        "mother_birthPlace" : motherBirthPlace.text,
+        "father_birthPlace": fatherBirthPlace.text,
+        "mother_birthPlace": motherBirthPlace.text,
         "mother_position": motherPosition.text,
         "mother_dept": motherDept.text,
         "birthday": _date,
