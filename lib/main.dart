@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: buildThemeData(),
       debugShowCheckedModeBanner: false,
-      title: 'Login Localhost',
+      title: 'UIT Registration',
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
         '/AdminPage': (BuildContext context) => new Form1(
