@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 //import 'new_register.dart';
 
 class Form1 extends StatefulWidget {
-  const Form1({Key key, String username}) : super(key: key);
+  const Form1({Key key, String username, String time}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -24,9 +24,10 @@ class Form1 extends StatefulWidget {
 
 class _State extends State<Form1> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   getNRC nrc = getNRC();
   bool darkThemeEnabled = false;
-  var date1 = DateTime.parse("2019-11-30 23:59:59");
+  var date1 = DateTime.parse(time);
   DateTime date2 = new DateTime.now();
   burmeseRegEx regEx = new burmeseRegEx();
 
@@ -155,9 +156,7 @@ class _State extends State<Form1> {
                       leading: Icon(Icons.error_outline),
                       title: new Text('Terms & Regulations'),
                       onTap: () {
-                        this.setState(() {
-                          var screen = 0;
-                        });
+                        this.setState(() {});
                         Navigator.pop(context);
                       },
                     ),
@@ -953,7 +952,17 @@ class _State extends State<Form1> {
         ),
       );
     } else {
-      child = Text(date2.toString());
+      child = SafeArea(
+        top: false,
+        child: Stack(
+          children: <Widget>[
+            Align(
+              child:  Text ("Sorry. Cannot register anymore."
+              ),
+            )
+          ],
+        ),
+      );
     }
     return new Container(child: child);
   }
@@ -1007,9 +1016,16 @@ class _State extends State<Form1> {
         "birthday": _date,
         "bloodType": _selectedBlood,
         "livingAddress": livingAddress.text,
-        "metriRoll": matriculationRoll.text,
-        "metriYear": matriculationYear.text,
-        "metriDept": matriculationDept.text,
+        "matriRoll": matriculationRoll.text,
+        "matriYear": matriculationYear.text,
+        "matriDept": matriculationDept.text,
+      });
+      await http.post("https://unireg.000webhostapp.com//setStatus.php", body: {
+        "engName": engName.text,
+        "NRC": _NRC,
+        "matriRoll": matriculationRoll.text,
+        "uniID": uniID.text,
+        "fatherName": fatherName.text,
       });
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {

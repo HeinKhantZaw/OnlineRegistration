@@ -12,6 +12,7 @@ import 'model/Form1.dart';
 void main() => runApp(new MyApp());
 
 String username = '';
+String time = '';
 
 class MyApp extends StatelessWidget {
   @override
@@ -23,9 +24,10 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
         '/AdminPage': (BuildContext context) => new Form1(
-          username: username,
-        ),
-        '/MemberPage': (BuildContext context) => new Form1(username: username),
+              username: username,
+            ),
+        '/MemberPage': (BuildContext context) =>
+            new Form1(username: username, time: time),
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
       },
     );
@@ -41,34 +43,43 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
 
-  String msg = '';
-
   Future<List> _login() async {
     final response =
-    await http.post("https://unireg.000webhostapp.com//get.php", body: {
+        await http.post("https://unireg.000webhostapp.com//get.php", body: {
       "Name": user.text,
       "NRC": pass.text,
     });
+    final duration =
+        await http.post("https://unireg.000webhostapp.com//getTime.php");
 
-    var datauser = json.decode(response.body);
+    var getTime = json.decode(duration.body);
 
-    if (datauser.length == 0) {
-      setState(() {
-        msg = "Login Fail";
-      });
+    var dataUser = json.decode(response.body);
+    setState(() {
+      username = dataUser[0]['Name'];
+      time = getTime[0]['end_date'];
+    });
+
+    if (dataUser.length == 0) {
+      Navigator.pushReplacementNamed(context, '/MemberPage');
     } else {
-      if (datauser[0]['Name'] == 'Zaw') {
+      if (dataUser[0]['status'] == '0') {
         Navigator.pushReplacementNamed(context, '/AdminPage');
-      } else if (datauser[0]['Name'] == 'ZawZaw') {
-        Navigator.pushReplacementNamed(context, '/MemberPage');
+      } else if (dataUser[0]['status'] == '1') {
+        Container(
+          decoration: new BoxDecoration(color: Colors.white),
+//        margin: EdgeInsets.all(30),
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(children: <Widget>[
+              new Padding(padding: EdgeInsets.only(top: 20.0)),
+              new Text("Contact to Student Affairs"),
+            ]),
+          ),
+        );
       }
-
-      setState(() {
-        username = datauser[0]['Name'];
-      });
     }
-
-    return datauser;
+    return dataUser;
   }
 
   @override
@@ -90,34 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Center(
                   child: Column(
                     children: <Widget>[
-//
-//              new InkWell(
-//                  onTap: () {},
-//                  child: new Theme(
-//                      data: new ThemeData(
-//                          primaryColor: Colors.yellow,
-//                          primaryColorDark: Colors.red,
-//                          hintColor: Colors.yellow
-//
-//                      ),
-//
-//                      child: new TextField(
-//                        decoration: new InputDecoration(
-//
-//                            border: new OutlineInputBorder(),
-//                            hintText: 'Tell us about yourself',
-//                            helperText: 'Keep it short, this is just a demo.',
-//                            labelText: 'Life story',
-//                            prefixIcon: const Icon(Icons.person, color: Colors.green,),
-//                            prefixText: ' ',
-//                            suffixText: 'USD',
-//                            suffixStyle: const TextStyle(color: Colors.green)),
-//                      )
-//                  )
-//              ),
-
                       new Padding(padding: EdgeInsets.only(top: 20.0)),
-
                       new TextFormField(
                         controller: user,
                         decoration: new InputDecoration(
@@ -142,12 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.black,
                         ),
                       ),
-
                       Padding(
                         padding: EdgeInsets.all(30.0),
 //                child: Text('Hello World!'),
                       ),
-
                       new TextFormField(
                         controller: pass,
                         obscureText: true,
@@ -171,12 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Colors.black,
                         ),
                       ),
-
                       Padding(
                         padding: EdgeInsets.all(8.0),
 //                child: Text('Hello World!'),
                       ),
-
                       KRaisedButton(
                         radius: 30.0,
                         color: Colors.teal,
@@ -185,11 +165,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         textFontWeight: FontWeight.bold,
                         onPressed: _login,
                       ),
-
-                      Text(
-                        msg,
-                        style: TextStyle(fontSize: 20.0, color: Colors.red),
-                      )
                     ],
                   ),
                 ),
