@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List> _login() async {
     final response =
-        await http.post("https://unireg.000webhostapp.com//get.php", body: {
+        await http.post("https://unireg.000webhostapp.com//Get.php", body: {
       "Name": user.text,
       "NRC": pass.text,
     });
