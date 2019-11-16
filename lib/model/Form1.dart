@@ -241,9 +241,7 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                                } else if (regEx.validateMmInput(value)) {
-                                  return 'မြန်မာလိုရေးရန်လိုသည်';
-                                } else
+                                }else
                                   return null;
                               },
                             ),

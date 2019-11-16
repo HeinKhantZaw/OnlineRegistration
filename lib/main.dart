@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:connection_status_bar/connection_status_bar.dart';
+import 'package:flutter_app/SA.dart';
 import 'package:flutter_app/model/raised_button.dart';
 
 import 'ThemeData.dart';
@@ -24,11 +25,12 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
         '/AdminPage': (BuildContext context) => new Form1(
-              username: username,
+            time: time
             ),
         '/MemberPage': (BuildContext context) =>
             new Form1(username: username, time: time),
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
+        '/status': (BuildContext context) => new SA(),
       },
     );
   }
@@ -55,28 +57,28 @@ class _MyHomePageState extends State<MyHomePage> {
     var getTime = json.decode(duration.body);
 
     var dataUser = json.decode(response.body);
-    setState(() {
-      username = dataUser[0]['Name'];
+
       time = getTime[0]['end_date'];
-    });
 
     if (dataUser.length == 0) {
-      Navigator.pushReplacementNamed(context, '/MemberPage');
+      Navigator.pushReplacementNamed(context, '/AdminPage');
     } else {
       if (dataUser[0]['status'] == '0') {
-        Navigator.pushReplacementNamed(context, '/AdminPage');
-      } else if (dataUser[0]['status'] == '1') {
-        Container(
-          decoration: new BoxDecoration(color: Colors.white),
+        username = dataUser[0]['Name'];
+        Navigator.pushReplacementNamed(context, '/MemberPage');
+      } else{
+//        Container(
+//          decoration: new BoxDecoration(color: Colors.white),
 //        margin: EdgeInsets.all(30),
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(children: <Widget>[
-              new Padding(padding: EdgeInsets.only(top: 20.0)),
-              new Text("Contact to Student Affairs"),
-            ]),
-          ),
-        );
+//          padding: const EdgeInsets.all(8.0),
+//          child: Center(
+//            child: Column(children: <Widget>[
+//              new Padding(padding: EdgeInsets.only(top: 20.0)),
+//              new Text("Contact to Student Affairs"),
+//            ]),
+//          ),
+//        );
+        Navigator.pushReplacementNamed(context, '/status');
       }
     }
     return dataUser;
@@ -137,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                               borderSide: BorderSide(color: Colors.black)),
-                          labelText: "Password",
+                          labelText: "Uni ID",
                           prefixIcon: const Icon(
                             Icons.remove_red_eye,
                           ),
