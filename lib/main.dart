@@ -1,14 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter_app/SA.dart';
-import 'package:flutter_app/model/raised_button.dart';
-
+import 'background.dart';
 import 'ThemeData.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
 import 'model/Form1.dart';
+import 'model/new_register.dart';
+import 'model/old_register.dart';
 
 void main() => runApp(new MyApp());
 
@@ -24,11 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'UIT Registration',
       home: new MyHomePage(),
       routes: <String, WidgetBuilder>{
-        '/AdminPage': (BuildContext context) => new Form1(
-            time: time
-        ),
+        '/AdminPage': (BuildContext context) => new Form1(time: time),
         '/MemberPage': (BuildContext context) =>
-        new Form1(username: username, time: time),
+            new Form1(username: username, time: time),
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
         '/status': (BuildContext context) => new SA(),
       },
@@ -45,138 +39,70 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
 
-  Future<List> _login() async {
-    final response =
-    await http.post("https://unireg.000webhostapp.com//Get.php", body: {
-      "Name": user.text,
-      "uno": pass.text,
-    });
-    final duration =
-    await http.post("https://unireg.000webhostapp.com//getTime.php");
+  void loginNew() async {
+    Navigator.of(context)
+        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+      return new new_register();
+    }));
+  }
 
-    var getTime = json.decode(duration.body);
-
-    var dataUser = json.decode(response.body);
-
-    time = getTime[0]['end_date'];
-
-    if (dataUser.length == 0) {
-      Navigator.pushReplacementNamed(context, '/AdminPage');
-    } else {
-      if (dataUser[0]['status'] == '0') {
-        username = dataUser[0]['Name'];
-        Navigator.pushReplacementNamed(context, '/MemberPage');
-      } else{
-//        Container(
-//          decoration: new BoxDecoration(color: Colors.white),
-//        margin: EdgeInsets.all(30),
-//          padding: const EdgeInsets.all(8.0),
-//          child: Center(
-//            child: Column(children: <Widget>[
-//              new Padding(padding: EdgeInsets.only(top: 20.0)),
-//              new Text("Contact to Student Affairs"),
-//            ]),
-//          ),
-//        );
-        Navigator.pushReplacementNamed(context, '/status');
-      }
-    }
-    return dataUser;
+  void loginOld() async {
+    Navigator.of(context)
+        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+      return new old_register();
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Stack(
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.white,
+      body: Stack(
         children: <Widget>[
-          Align(
-            child: Scaffold(
-              resizeToAvoidBottomPadding: false,
-              appBar: AppBar(
-                title: Text("Login"),
-              ),
-              body: Container(
-                decoration: new BoxDecoration(color: Colors.white),
-//        margin: EdgeInsets.all(30),
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Column(
+          Background(),
+        
+          Padding(
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 2.3),
+          ),
+          Column(
+            children: <Widget>[
+              ///holds email header and inputField
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 40, bottom: 10),
+                  ),
+                  Stack(
+                    alignment: Alignment.bottomRight,
                     children: <Widget>[
-                      new Padding(padding: EdgeInsets.only(top: 20.0)),
-                      new TextFormField(
-                        controller: user,
-                        decoration: new InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(color: Colors.black)),
-
-                          labelText: "Username",
-                          prefixIcon: const Icon(
-                            Icons.person,
-                          ),
-                          fillColor: Colors.black,
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                            borderSide: new BorderSide(),
-                          ),
-                          //fillColor: Colors.green
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                          color: Colors.black,
-                        ),
-                      ),
                       Padding(
-                        padding: EdgeInsets.all(30.0),
-//                child: Text('Hello World!'),
-                      ),
-                      new TextFormField(
-                        controller: pass,
-                        obscureText: true,
-                        decoration: new InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(color: Colors.black)),
-                          labelText: "Uni ID",
-                          prefixIcon: const Icon(
-                            Icons.remove_red_eye,
-                          ),
-                          fillColor: Colors.black,
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                            borderSide: new BorderSide(),
-                          ),
-                          //fillColor: Colors.green
-                        ),
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                          color: Colors.black,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-//                child: Text('Hello World!'),
-                      ),
-                      KRaisedButton(
-                        radius: 30.0,
-                        color: Colors.teal,
-                        text: 'Login',
-                        textColor: Colors.white,
-                        textFontWeight: FontWeight.bold,
-                        onPressed: _login,
-                      ),
+                          padding: EdgeInsets.only(right: 50),
+                          child: Row(
+                            children: <Widget>[],
+                          ))
                     ],
                   ),
-                ),
+                ],
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConnectionStatusBar(),
-          ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 400),
+              ),
+
+              CustomButton(onPressed: () {
+                loginNew();
+              }),
+
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
+              ),
+              CustomButton1(onPressed: () {
+                loginOld();
+              }),
+            ],
+          )
         ],
       ),
     );
@@ -184,5 +110,95 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Color hexToColor(String code) {
     return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  CustomButton({@required this.onPressed});
+
+  List<Color> gradient = [
+    Color(0xFF0EDED2),
+    Color(0xFF03A0FE),
+  ];
+  String title = 'New Student';
+  final GestureTapCallback onPressed;
+
+  @override
+  Widget build(BuildContext mContext) {
+    return RawMaterialButton(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Stack(
+          alignment: Alignment(0.0, 0.0),
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(mContext).size.width / 1.7,
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                gradient: LinearGradient(
+                    colors: gradient,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight),
+              ),
+              child: Text(title,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500)),
+              padding: EdgeInsets.only(top: 16, bottom: 16),
+            ),
+          ],
+        ),
+      ),
+      onPressed: onPressed,
+      shape: const StadiumBorder(),
+    );
+  }
+}
+
+class CustomButton1 extends StatelessWidget {
+  CustomButton1({@required this.onPressed});
+
+  List<Color> gradient = [
+    Color(0xFFFF80AB),
+    Color(0xFFFF4081),
+  ];
+  String title = 'Old Student';
+  final GestureTapCallback onPressed;
+
+  @override
+  Widget build(BuildContext mContext) {
+    return RawMaterialButton(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Stack(
+          alignment: Alignment(0.0, 0.0),
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(mContext).size.width / 1.7,
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+                gradient: LinearGradient(
+                    colors: gradient,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight),
+              ),
+              child: Text(title,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500)),
+              padding: EdgeInsets.only(top: 16, bottom: 16),
+            ),
+          ],
+        ),
+      ),
+      onPressed: onPressed,
+      shape: const StadiumBorder(),
+    );
   }
 }
