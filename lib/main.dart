@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final response =
     await http.post("https://unireg.000webhostapp.com//Get.php", body: {
       "Name": user.text,
-      "NRC": pass.text,
+      "uno": pass.text,
     });
     final duration =
     await http.post("https://unireg.000webhostapp.com//getTime.php");
