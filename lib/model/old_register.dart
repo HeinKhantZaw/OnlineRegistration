@@ -49,17 +49,6 @@ class _State extends State<old_register> {
         username = dataUser[0]['Name'];
         Navigator.pushReplacementNamed(context, '/MemberPage');
       } else{
-//        Container(
-//          decoration: new BoxDecoration(color: Colors.white),
-//        margin: EdgeInsets.all(30),
-//          padding: const EdgeInsets.all(8.0),
-//          child: Center(
-//            child: Column(children: <Widget>[
-//              new Padding(padding: EdgeInsets.only(top: 20.0)),
-//              new Text("Contact to Student Affairs"),
-//            ]),
-//          ),
-//        );
         Navigator.pushReplacementNamed(context, '/status');
       }
     }
