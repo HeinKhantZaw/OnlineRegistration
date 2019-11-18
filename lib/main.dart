@@ -2,6 +2,7 @@ import 'package:flutter_app/SA.dart';
 import 'background.dart';
 import 'ThemeData.dart';
 import 'package:flutter/material.dart';
+import 'login.dart';
 import 'model/Form1.dart';
 import 'model/new_register.dart';
 import 'model/old_register.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
             new Form1(username: username, time: time),
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
         '/status': (BuildContext context) => new SA(),
+        '/login': (BuildContext context) => new LoginPage(),
       },
     );
   }
@@ -36,8 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController user = new TextEditingController();
-  TextEditingController pass = new TextEditingController();
 
   void loginNew() async {
     Navigator.of(context)
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 400),
+                padding: EdgeInsets.only(bottom: 350),
               ),
 
               CustomButton(onPressed: () {

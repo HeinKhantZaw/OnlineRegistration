@@ -2,15 +2,13 @@ import 'dart:convert';
 import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_app/SA.dart';
+import '../login.dart';
 import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'CustomDialog.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import '../NRC_db/getNRC.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class new_register extends StatefulWidget {
   const new_register({Key key, String username, String time}) : super(key: key);
@@ -45,13 +43,12 @@ class _State extends State<new_register> {
     var dataUser = json.decode(response.body);
 
     if (dataUser.length == 0) {
-      Navigator.pushReplacementNamed(context, '/AdminPage');
+      Navigator.pushReplacementNamed(context, '/login');
     } else {
       if (dataUser[0]['status'] == '0') {
         username = dataUser[0]['Name'];
-        Navigator.pushReplacementNamed(context, '/MemberPage');
+        Navigator.pushReplacementNamed(context, '/login');
       } else{
-
         Navigator.pushReplacementNamed(context, '/status');
       }
     }
@@ -81,9 +78,6 @@ class _State extends State<new_register> {
         debugShowCheckedModeBanner: false,
         theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
         home: home(),
-    routes: <String, WidgetBuilder>{
-    '/status': (BuildContext context) => new SA(),
-    },
     );
   }
 

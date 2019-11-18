@@ -4,8 +4,10 @@ import 'package:flutter_app/main.dart';
 import 'package:flutter_app/model/qr.dart';
 import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import '../SA.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
+import 'CustomDialog.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
 import '../NRC_db/getNRC.dart';
@@ -103,6 +105,10 @@ class _State extends State<Form1> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/status': (BuildContext context) => new SA(),
+          '/QR': (BuildContext context) => new qr(),
+        },
         theme: darkThemeEnabled ? ThemeData.dark() : buildThemeData(),
         home: home());
   }
@@ -119,68 +125,68 @@ class _State extends State<Form1> {
                   appBar: AppBar(title: Text('Student Registration')),
                   endDrawer: new Drawer(
                       child: new Column(children: <Widget>[
-                        new UserAccountsDrawerHeader(
-                          accountName: new Text("$username",
-                              style: new TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0)),
-                          accountEmail: new Text(
-                            "firstname@lastname.com",
-                            style: new TextStyle(color: Colors.blueGrey[50]),
-                          ),
-                          currentAccountPicture: new CircleAvatar(
-                              backgroundColor: Colors.brown, child: new Text("FL")),
-                        ),
-                        new ListTile(
-                          leading: Icon(Icons.account_circle),
-                          title: new Text('My Profiles'),
-                          onTap: () {
-                            this.setState(() {
-                              var screen = 1;
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                        new ListTile(
-                          leading: Icon(Icons.center_focus_strong),
-                          title: new Text('KBZpay QR Code'),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (BuildContext context) => new qr()));
-                          },
-                        ),
-                        new ListTile(
-                          leading: Icon(Icons.error_outline),
-                          title: new Text('Terms & Regulations'),
-                          onTap: () {
-                            this.setState(() {});
-                            Navigator.pop(context);
-                          },
-                        ),
-                        new ListTile(
-                          title: Text("Dark Theme"),
-                          trailing: Switch(
-                            value: darkThemeEnabled,
-                            onChanged: (changedTheme) {
-                              setState(() {
-                                darkThemeEnabled = changedTheme;
-                              });
-                            },
-                          ),
-                        ),
-                        new Divider(),
-                        new ListTile(
-                          leading: Icon(Icons.power_settings_new),
-                          title: new Text('Logout'),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ])),
+                    new UserAccountsDrawerHeader(
+                      accountName: new Text("$username",
+                          style: new TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0)),
+                      accountEmail: new Text(
+                        "firstname@lastname.com",
+                        style: new TextStyle(color: Colors.blueGrey[50]),
+                      ),
+                      currentAccountPicture: new CircleAvatar(
+                          backgroundColor: Colors.brown, child: new Text("FL")),
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.account_circle),
+                      title: new Text('My Profiles'),
+                      onTap: () {
+                        this.setState(() {
+                          var screen = 1;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.center_focus_strong),
+                      title: new Text('KBZpay QR Code'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (BuildContext context) => new qr()));
+                      },
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.error_outline),
+                      title: new Text('Terms & Regulations'),
+                      onTap: () {
+                        this.setState(() {});
+                        Navigator.pop(context);
+                      },
+                    ),
+                    new ListTile(
+                      title: Text("Dark Theme"),
+                      trailing: Switch(
+                        value: darkThemeEnabled,
+                        onChanged: (changedTheme) {
+                          setState(() {
+                            darkThemeEnabled = changedTheme;
+                          });
+                        },
+                      ),
+                    ),
+                    new Divider(),
+                    new ListTile(
+                      leading: Icon(Icons.power_settings_new),
+                      title: new Text('Logout'),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ])),
                   body: SingleChildScrollView(
                     child: new Form(
                       key: _formKey,
@@ -242,7 +248,7 @@ class _State extends State<Form1> {
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
                                   return 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                                }else
+                                } else
                                   return null;
                               },
                             ),
@@ -267,7 +273,7 @@ class _State extends State<Form1> {
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး (မိမိ)',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -284,7 +290,7 @@ class _State extends State<Form1> {
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး (အဘ)',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -301,7 +307,7 @@ class _State extends State<Form1> {
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး (အမိ)',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -630,11 +636,11 @@ class _State extends State<Form1> {
                                     minTime: DateTime(1997, 1, 1),
                                     maxTime: DateTime(2022, 12, 31),
                                     onConfirm: (date) {
-                                      print('confirm $date');
-                                      _date =
+                                  print('confirm $date');
+                                  _date =
                                       '${date.year} - ${date.month} - ${date.day}';
-                                      setState(() {});
-                                    },
+                                  setState(() {});
+                                },
                                     currentTime: DateTime.now(),
                                     locale: LocaleType.en);
                               },
@@ -643,7 +649,7 @@ class _State extends State<Form1> {
                                 height: 50.0,
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
@@ -866,7 +872,7 @@ class _State extends State<Form1> {
                               controller: matriculationRoll,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
                                 prefixIcon: Icon(Icons.book),
                               ),
                               keyboardType: TextInputType.text,
@@ -884,7 +890,7 @@ class _State extends State<Form1> {
                               controller: matriculationYear,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
                                 prefixIcon: Icon(Icons.calendar_today),
                               ),
                               keyboardType: TextInputType.number,
@@ -900,7 +906,7 @@ class _State extends State<Form1> {
                               controller: matriculationDept,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
                                 prefixIcon: Icon(Icons.business),
                               ),
                               keyboardType: TextInputType.text,
@@ -987,19 +993,32 @@ class _State extends State<Form1> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   new Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      KRaisedButton(
-                                        radius: 30.0,
-                                        color: Colors.teal,
-                                        text: 'Next',
+                                      RaisedButton(
+                                        padding: EdgeInsets.all(0.0),
+                                        onPressed: () {
+                                          if (_validateForm()) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  CustomDialog(
+                                                title: "Success",
+                                                description:
+                                                    "Successfully Submitted",
+                                                buttonText: "Ok",
+                                              ),
+                                            );
+                                            _submit();
+                                          }
+                                        },
                                         textColor: Colors.white,
-                                        textFontWeight: FontWeight.bold,
-                                        onPressed: _submit,
+                                        color: Colors.teal,
+                                        child: Text('Register'),
                                       ),
                                     ],
                                   )
@@ -1025,8 +1044,7 @@ class _State extends State<Form1> {
         child: Stack(
           children: <Widget>[
             Align(
-              child:  Text ("Sorry. Cannot register anymore."
-              ),
+              child: Text("Sorry. Cannot register anymore."),
             )
           ],
         ),
@@ -1101,8 +1119,7 @@ class _State extends State<Form1> {
         "fatherName": fatherName.text,
       });
       Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      }));
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {}));
     }
   }
 
