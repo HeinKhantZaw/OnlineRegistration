@@ -8,6 +8,7 @@ import '../SA.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import 'CustomDialog.dart';
+import 'ImagePick.dart';
 import 'qr.dart';
 import 'package:flutter_app/model/raised_button.dart';
 import '../NRC_db/getNRC.dart';
@@ -1119,7 +1120,9 @@ class _State extends State<Form1> {
         "fatherName": fatherName.text,
       });
       Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {}));
+          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+        return new ImagePick();
+      }));
     }
   }
 

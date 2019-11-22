@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-import '../login.dart';
 import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'CustomDialog.dart';
 import '../ThemeData.dart';
