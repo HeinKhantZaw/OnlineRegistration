@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'consts.dart';
 
-class CustomDialog extends StatelessWidget {
+class CustomDialog1 extends StatelessWidget {
   final String title, description, buttonText;
   final Image image;
 
-  CustomDialog({
+  CustomDialog1({
     @required this.title,
     @required this.description,
     @required this.buttonText,
@@ -72,7 +72,6 @@ class CustomDialog extends StatelessWidget {
                 child: FlatButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // To close the dialog
-                    Navigator.pushReplacementNamed(context, '/login');
                   },
                   child: Text(buttonText),
                 ),

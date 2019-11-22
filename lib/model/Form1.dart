@@ -7,10 +7,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../SA.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
-import 'CustomDialog.dart';
+import 'CustomDialog1.dart';
 import 'ImagePick.dart';
 import 'qr.dart';
-import 'package:flutter_app/model/raised_button.dart';
 import '../NRC_db/getNRC.dart';
 import 'package:http/http.dart' as http;
 
@@ -217,8 +216,9 @@ class _State extends State<Form1> {
                                 prefixIcon: Icon(Icons.person),
                               ),
                               validator: (String value) {
-                                if (value.trim().isEmpty ||
-                                    regEx.validateMmInput(value)) {
+                                if (value.trim().isEmpty) {
+                                  return 'အမည်ထည့်ရန်လိုသည်';
+                                } else if (regEx.validateMmInput(value)) {
                                   return 'Myanmar အမည်ထည့်ရန်လိုသည်';
                                 } else
                                   return null;
@@ -1007,11 +1007,11 @@ class _State extends State<Form1> {
                                             showDialog(
                                               context: context,
                                               builder: (BuildContext context) =>
-                                                  CustomDialog(
+                                                  CustomDialog1(
                                                 title: "Success",
                                                 description:
-                                                    "Successfully Submitted",
-                                                buttonText: "Ok",
+                                                    "Successfully Submitted", buttonText: "OK",
+
                                               ),
                                             );
                                             _submit();

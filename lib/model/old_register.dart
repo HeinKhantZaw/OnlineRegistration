@@ -19,20 +19,19 @@ class old_register extends StatefulWidget {
 
 class _State extends State<old_register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String userName = '';
+  String password = '';
   getNRC nrc = getNRC();
   bool darkThemeEnabled = false;
   burmeseRegEx regEx = new burmeseRegEx();
 
   TextEditingController name = new TextEditingController();
   TextEditingController uno = new TextEditingController();
-  TextEditingController nrcNum = new TextEditingController();
 
   Future<List> _login() async {
     final response =
         await http.post("https://unireg.000webhostapp.com//Get.php", body: {
       "Name": name.text,
-      "NRC": nrcNum.text,
       "uno": uno.text,
     });
     final duration =
@@ -42,11 +41,22 @@ class _State extends State<old_register> {
     time = getTime[0]['end_date'];
     var dataUser = json.decode(response.body);
     if (dataUser.length == 0) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/error');
     } else {
       if (dataUser[0]['status'] == '0') {
-        username = dataUser[0]['Name'];
-        Navigator.pushReplacementNamed(context, '/login');
+        userName = dataUser[0]['username'];
+        password = dataUser[0]['password'];
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              CustomDialog(
+                title: "Success",
+                description:
+                "Username :" + userName +
+                    "\nPassword :" +
+                    password, buttonText: "OK",
+              ),
+        );
       } else {
         Navigator.pushReplacementNamed(context, '/status');
       }
@@ -54,17 +64,10 @@ class _State extends State<old_register> {
     return dataUser;
   }
 
-  List<String> _codes = [".."];
-  List<String> _codeNames = [".."];
-  String _selectedCode;
-  String _selectedCodeName;
   String newValue;
-
-  String _NRC;
 
   @override
   void initState() {
-    _codes = List.from(_codes)..addAll(nrc.getCodes());
     super.initState();
   }
 
@@ -97,12 +100,22 @@ class _State extends State<old_register> {
                             controller: name,
                             decoration: InputDecoration(
                               labelText: 'နာမည်',
+                              hintText: 'မောင်/မ',
                               prefixIcon: Icon(Icons.person),
                             ),
                             validator: (String value) {
-                              if (value.trim().isEmpty) {
+                              if (value.trim().isEmpty)
+                                {
+                                  return 'နာမည်ထည့်ရန်လိုသည်';
+                                }
+                              else if (regEx.validateMmInput(value)) {
                                 return 'မြန်မာလိုထည့်ရန်လိုသည်';
-                              } else
+                              }
+                              else if(regEx.validateMmBoyName(value) && regEx.validateMmGirlName(value) )
+                              {
+                                return 'Format အမှန်ထည့်ရန်လိုသည်';
+                              }
+                              else
                                 return null;
                             },
                           ),
@@ -110,142 +123,20 @@ class _State extends State<old_register> {
                           TextFormField(
                             controller: uno,
                             decoration: InputDecoration(
+                              hintText: 'သနတ- 1279',
                               labelText: 'တက္ကသိုလ်ကျောင်းဝင်နံပါတ်',
                               prefixIcon: Icon(Icons.credit_card),
                             ),
                             validator: (String value) {
                               if (value.trim().isEmpty) {
-                                return 'ခုနှစ်ထည့်ရန်လိုသည်';
+                                return 'တက္ကသိုလ်ကျောင်းဝင်နံပါတ်ထည့်ရန်လိုသည်';
+                              } else if (regEx.validateUNO(value)) {
+                                return 'Format အမှန်ထည့်ရန်လိုသည်';
                               } else
                                 return null;
                             },
                           ),
                           const SizedBox(height: 16.0),
-                          Text('မှတ်ပုံတင်အမှတ်'),
-                          const SizedBox(height: 8.0),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  // use this to match the Flex size..., is like using Expanded.
-                                  width: double.infinity,
-                                  // container defines the BoxConstrains of the children
-                                  child: DropdownButtonFormField<String>(
-                                    hint: Text('၁၂/'),
-                                    items:
-                                        _codes.map((String dropDownStringItem) {
-                                      return DropdownMenuItem<String>(
-                                        value: dropDownStringItem,
-                                        child: Text(dropDownStringItem),
-                                      );
-                                    }).toList(),
-                                    validator: (String value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'ထည့်ပါ';
-                                      } else if (_selectedCode.contains('..')) {
-                                        return 'ထည့်ပါ';
-                                      } else
-                                        return null;
-                                    },
-                                    onChanged: (value) =>
-                                        _onSelectedCode(value),
-                                    value: _selectedCode,
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  // use this to match the Flex size..., is like using Expanded.
-                                  width: double.infinity,
-
-                                  // container defines the BoxConstrains of the children
-                                  child: DropdownButtonFormField<String>(
-                                    hint: Text('မဂတ'),
-                                    items: _codeNames
-                                        .map((String dropDownStringItem) {
-                                      return DropdownMenuItem<String>(
-                                        value: dropDownStringItem,
-                                        child: Text(dropDownStringItem),
-                                      );
-                                    }).toList(),
-                                    validator: (String value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'ထည့်ပါ';
-                                      } else if (_selectedCodeName
-                                          .contains('..')) {
-                                        return 'ထည့်ပါ';
-                                      } else
-                                        return null;
-                                    },
-                                    // onChanged: (value) => print(value),
-                                    onChanged: (value) =>
-                                        _onSelectedCodeName(value),
-                                    value: _selectedCodeName,
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  // use this to match the Flex size..., is like using Expanded.
-                                  width: double.infinity,
-                                  // container defines the BoxConstrains of the children
-                                  child: DropdownButtonFormField<String>(
-                                    hint: Text('(နိုင်)'),
-                                    value: newValue,
-                                    items: <String>[
-                                      '(နိုင်)',
-                                      '(ဧည့်)',
-                                      '(ပြု)'
-                                    ].map((String value) {
-                                      return new DropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(value),
-                                      );
-                                    }).toList(),
-                                    validator: (String value) {
-                                      if (value?.isEmpty ?? true) {
-                                        return 'ထည့်ပါ';
-                                      } else
-                                        return null;
-                                    },
-                                    onChanged: (String changedValue) {
-                                      newValue = changedValue;
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  // use this to match the Flex size..., is like using Expanded.
-                                  width: double.infinity,
-                                  // container defines the BoxConstrains of the children
-
-                                  child: TextFormField(
-                                    controller: nrcNum,
-                                    decoration: InputDecoration(
-                                      hintText: '၁၁၀၂၀၃',
-                                    ),
-                                    validator: (String value) {
-                                      if (value.trim().isEmpty) {
-                                        return 'မှတ်ပုံတင်အမှတ်ထည့်ရန်လိုသည်';
-                                      } else if (regEx
-                                          .validateMmNumberInput(value)) {
-                                        return 'မြန်မာလိုရေးရန်လိုသည်';
-                                      } else
-                                        return null;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -258,18 +149,8 @@ class _State extends State<old_register> {
                                     RaisedButton(
                                       padding: EdgeInsets.all(0.0),
                                       onPressed: () {
-                                        if (_validateForm()) {
+                                        if(_validateForm()) {
                                           _login();
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                CustomDialog(
-                                              title: "Success",
-                                              description:
-                                                  "Username : $username \n Password :  ",
-                                              buttonText: "Login",
-                                            ),
-                                          );
                                         }
                                       },
                                       textColor: Colors.white,
@@ -300,25 +181,6 @@ class _State extends State<old_register> {
 
   bool _validateForm() {
     bool _isValid = _formKey.currentState.validate();
-
-    if (_selectedCodeName == null || _selectedCode == null) {
-      _isValid = false;
-    }
     return _isValid;
-  }
-
-  void _onSelectedCode(String value) {
-    setState(() {
-      _selectedCodeName = "..";
-      _codeNames = [".."];
-      _selectedCode = value;
-      _codeNames = List.from(_codeNames)..addAll(nrc.getNameByCode(value));
-    });
-  }
-
-  void _onSelectedCodeName(String value) {
-    setState(() {
-      _selectedCodeName = value;
-    });
   }
 }

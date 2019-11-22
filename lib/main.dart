@@ -1,4 +1,5 @@
 import 'package:flutter_app/SA.dart';
+import 'ErrorInfo.dart';
 import 'background.dart';
 import 'ThemeData.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/MyHomePage': (BuildContext context) => new MyHomePage(),
         '/status': (BuildContext context) => new SA(),
         '/login': (BuildContext context) => new LoginPage(),
+        '/error': (BuildContext context) => new ErrorInfo(),
       },
     );
   }

@@ -40,9 +40,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController pass = new TextEditingController();
 
   Future<List> _login() async {
-    final response = await http.post("https://unireg.000webhostapp.com//Get.php", body: {
-      "Name": user.text,
-      "uno": pass.text,
+    final response = await http.post("https://unireg.000webhostapp.com//Login.php", body: {
+      "username": user.text,
+      "password": pass.text,
     });
     final duration = await http.post("https://unireg.000webhostapp.com//getTime.php");
     var getTime = json.decode(duration.body);
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     time = getTime[0]['end_date'];
 
     if (dataUser.length == 0) {
-      Navigator.pushReplacementNamed(context, '/AdminPage');
+      Navigator.pushReplacementNamed(context, '/error');
     } else {
       if (dataUser[0]['status'] == '0') {
         username = dataUser[0]['Name'];
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                               borderSide: BorderSide(color: Colors.black)),
-                          labelText: "Uni ID",
+                          labelText: "Password",
                           prefixIcon: const Icon(
                             Icons.remove_red_eye,
                           ),
