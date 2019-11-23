@@ -37,7 +37,7 @@ class burmeseRegEx
       return false;
   }
   bool validateUNO(String value) {
-    Pattern pattern = 'သနတ- [0-9]{4}';
+    Pattern pattern = 'သနတ- [0-9]{3,4}';
     RegExp regex = new RegExp(pattern,unicode: true);
     if (!regex.hasMatch(value)){
       return true;
