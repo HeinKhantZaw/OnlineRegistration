@@ -101,12 +101,6 @@ class _MyHomePageState extends State<MyHomePage>
   bool _obscureTextSignup = true;
   bool _obscureTextSignupConfirm = true;
 
-  TextEditingController signupEmailController = new TextEditingController();
-  TextEditingController signupNameController = new TextEditingController();
-  TextEditingController signupPasswordController = new TextEditingController();
-  TextEditingController signupConfirmPasswordController =
-      new TextEditingController();
-
   PageController _pageController;
 
   Color left = Colors.black;
@@ -506,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage>
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
                         child: TextField(
                           focusNode: myFocusNodeName,
-                          controller: signupNameController,
+                          controller: loginEmailController,
                           keyboardType: TextInputType.text,
                           textCapitalization: TextCapitalization.words,
                           style: TextStyle(
@@ -633,6 +627,44 @@ class _MyHomePageState extends State<MyHomePage>
                       fontSize: 16.0,
                       fontFamily: "WorkSansMedium"),
                 )),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: new LinearGradient(
+                        colors: [
+                          Colors.white10,
+                          Colors.white,
+                        ],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 1.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  width: 100.0,
+                  height: 1.0,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: new LinearGradient(
+                        colors: [
+                          Colors.white,
+                          Colors.white10,
+                        ],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 1.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  width: 100.0,
+                  height: 1.0,
+                ),
+              ],
+            ),
           ),
         ],
       ),

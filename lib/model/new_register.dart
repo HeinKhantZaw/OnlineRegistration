@@ -136,7 +136,7 @@ class _State extends State<new_register> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     RaisedButton(
-                                      padding: EdgeInsets.all(0.0),
+                                      padding: EdgeInsets.all(10.0),
                                       onPressed: () {
                                         if (_validateForm()) {
                                           _login();
