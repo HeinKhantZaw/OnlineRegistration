@@ -1121,7 +1121,7 @@ class _State extends State<Form1> {
       });
       Navigator.of(context)
           .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return new ImagePick();
+        return new ImageUpload();
       }));
     }
   }
