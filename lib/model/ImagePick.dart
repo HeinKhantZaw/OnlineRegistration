@@ -69,7 +69,7 @@ class _ImageUploadState extends State<ImageUpload> {
   Future<void> _upload(BuildContext context) async {
     var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
     var length = await _image.length();
-    var uri = Uri.parse("https://unireg.000webhostapp.com/file-upload.php");
+    var uri = Uri.parse("https://uitonlinereg.000webhostapp.com/file-upload.php");
 
     var request = new http.MultipartRequest("POST", uri);
 

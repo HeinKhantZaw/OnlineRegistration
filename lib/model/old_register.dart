@@ -30,12 +30,12 @@ class _State extends State<old_register> {
 
   Future<List> _login() async {
     final response =
-        await http.post("https://unireg.000webhostapp.com//Get.php", body: {
+        await http.post("https://uitonlinereg.000webhostapp.com//Get.php", body: {
       "Name": name.text,
       "uno": uno.text,
     });
     final duration =
-        await http.post("https://unireg.000webhostapp.com//getTime.php");
+        await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
 
     var getTime = json.decode(duration.body);
     time = getTime[0]['end_date'];

@@ -18,7 +18,6 @@ class ErrorInfo extends StatelessWidget {
 
         return widget;
       },
-      title: 'Error',
     );
   }
 
@@ -26,7 +25,7 @@ class ErrorInfo extends StatelessWidget {
     return Scaffold(
         body: Center(
       child: Text(
-        " Please try again.",
+        "Sorry please try again. Your username or password is wrong.",
         style: Theme.of(context).textTheme.title,
       ),
     ));

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/SA.dart';
 import 'ErrorInfo.dart';
 import 'ThemeData.dart';
-import 'package:flutter/material.dart';
+import 'widgets/loading_dialog.dart';
 import 'model/Form1.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,11 +13,13 @@ import 'model/old_register.dart';
 import 'style/theme.dart' as Theme;
 import 'package:http/http.dart' as http;
 import 'utils/bubble_indication_painter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 void main() => runApp(new MyApp());
 
 String username = '';
 String time = '';
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,21 +48,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
+  ProgressDialog pr;
   Future<List> _login() async {
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
+    pr.show();
     final response =
-        await http.post("https://unireg.000webhostapp.com//Login.php", body: {
+        await http.post("https://uitonlinereg.000webhostapp.com//Login.php", body: {
       "username": loginEmailController.text,
       "password": loginPasswordController.text,
     });
     final duration =
-        await http.post("https://unireg.000webhostapp.com//getTime.php");
+        await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
     var getTime = json.decode(duration.body);
     var dataUser = json.decode(response.body);
     time = getTime[0]['end_date'];
 
     if (dataUser.length == 0) {
+      pr.hide();
       Navigator.pushReplacementNamed(context, '/error');
     } else {
+      pr.hide();
       if (dataUser[0]['status'] == '0') {
         username = dataUser[0]['Name'];
         Navigator.pushReplacementNamed(context, '/MemberPage');
