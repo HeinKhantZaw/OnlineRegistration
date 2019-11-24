@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage>
     pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
     pr.show();
     final response =
-        await http.post("https://uitonlinereg.000webhostapp.com//Login.php", body: {
+        await http.post("https://uitonlinereg.000webhostapp.com//login.php", body: {
       "username": loginEmailController.text,
       "password": loginPasswordController.text,
     });

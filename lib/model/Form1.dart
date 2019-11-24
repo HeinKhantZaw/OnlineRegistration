@@ -5,6 +5,7 @@ import 'package:flutter_app/main.dart';
 
 import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 //import 'package:fluttertoast/fluttertoast.dart';
 import '../SA.dart';
 import '../ThemeData.dart';
@@ -13,7 +14,6 @@ import 'CustomDialog.dart';
 
 import '../NRC_db/getNRC.dart';
 import 'package:http/http.dart' as http;
-
 
 class Form1 extends StatefulWidget {
   const Form1({Key key, String username, String time}) : super(key: key);
@@ -31,49 +31,53 @@ class _State extends State<Form1> {
   DateTime date2 = new DateTime.now();
   burmeseRegEx regEx = new burmeseRegEx();
 
-  TextEditingController mmName = new TextEditingController();
-  TextEditingController engName = new TextEditingController();
-  TextEditingController roll = new TextEditingController();
-  TextEditingController uniID = new TextEditingController();
-  TextEditingController uniStart = new TextEditingController();
-  TextEditingController ethnic = new TextEditingController();
-  TextEditingController fatherEthnic = new TextEditingController();
-  TextEditingController motherEthnic = new TextEditingController();
+  TextEditingController uno = new TextEditingController();
+  TextEditingController startingyear = new TextEditingController();
+  TextEditingController mmSName = new TextEditingController();
+  TextEditingController enSName = new TextEditingController();
+  TextEditingController nationality = new TextEditingController();
   TextEditingController religion = new TextEditingController();
-  TextEditingController fatherReligion = new TextEditingController();
-  TextEditingController motherReligion = new TextEditingController();
-  TextEditingController birthPlace = new TextEditingController();
-  TextEditingController fatherBirthPlace = new TextEditingController();
-  TextEditingController motherBirthPlace = new TextEditingController();
+  TextEditingController hometown = new TextEditingController();
   TextEditingController township = new TextEditingController();
-  TextEditingController fatherTownship = new TextEditingController();
-  TextEditingController motherTownship = new TextEditingController();
-  TextEditingController fatherName = new TextEditingController();
-  TextEditingController fatherAddress = new TextEditingController();
-  TextEditingController motherName = new TextEditingController();
-  TextEditingController motherAddress = new TextEditingController();
-  TextEditingController motherPhone = new TextEditingController();
-  TextEditingController fatherPhone = new TextEditingController();
-  TextEditingController phone = new TextEditingController();
-  TextEditingController birthday = new TextEditingController();
+  TextEditingController division = new TextEditingController();
   TextEditingController nrcNum = new TextEditingController();
-  TextEditingController livingAddress = new TextEditingController();
-  TextEditingController fatherJob = new TextEditingController();
-  TextEditingController motherJob = new TextEditingController();
+  TextEditingController dateOfBirth = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
   TextEditingController matriculationRoll = new TextEditingController();
   TextEditingController matriculationYear = new TextEditingController();
   TextEditingController matriculationDept = new TextEditingController();
-  TextEditingController providerName = new TextEditingController();
-  TextEditingController relationship = new TextEditingController();
-  TextEditingController providerJob = new TextEditingController();
-  TextEditingController providerAddress = new TextEditingController();
-  TextEditingController providerPhoneNum = new TextEditingController();
+  TextEditingController address = new TextEditingController();
+  TextEditingController roll = new TextEditingController();
+  TextEditingController mmfatherName = new TextEditingController();
+  TextEditingController enfatherName = new TextEditingController();
+  TextEditingController f_nationality = new TextEditingController();
+  TextEditingController fatherReligion = new TextEditingController();
+  TextEditingController fatherHometown = new TextEditingController();
+  TextEditingController fatherTownship = new TextEditingController();
+  TextEditingController fatherDivision = new TextEditingController();
+  TextEditingController fatherJob = new TextEditingController();
   TextEditingController fatherPosition = new TextEditingController();
-  TextEditingController motherPosition = new TextEditingController();
   TextEditingController fatherDept = new TextEditingController();
+  TextEditingController fatherBirthPlace = new TextEditingController();
+  TextEditingController fatherAddress = new TextEditingController();
+  TextEditingController fatherPhone = new TextEditingController();
+
+  TextEditingController mmmotherName = new TextEditingController();
+  TextEditingController enmotherName = new TextEditingController();
+  TextEditingController m_nationality = new TextEditingController();
+  TextEditingController motherReligion = new TextEditingController();
+  TextEditingController motherHometown = new TextEditingController();
+  TextEditingController motherTownship = new TextEditingController();
+  TextEditingController motherDivision = new TextEditingController();
+  TextEditingController motherJob = new TextEditingController();
+  TextEditingController motherPosition = new TextEditingController();
   TextEditingController motherDept = new TextEditingController();
+  TextEditingController motherBirthPlace = new TextEditingController();
+  TextEditingController motherAddress = new TextEditingController();
+  TextEditingController motherPhone = new TextEditingController();
+
   TextEditingController proName = new TextEditingController();
-  TextEditingController rs = new TextEditingController();
+  TextEditingController relationship = new TextEditingController();
   TextEditingController proJob = new TextEditingController();
   TextEditingController proAddress = new TextEditingController();
   TextEditingController proPhoneNum = new TextEditingController();
@@ -84,10 +88,27 @@ class _State extends State<Form1> {
   String _selectedCodeName;
   String newValue;
   String _date = "မွေးသက္ကရာဇ်";
-  List _majors = ["First Year", "Second Year", "Third Year CS", "Third Year CT", "Fourth Year SE","Fourth Year KE", "Fourth Year BIS", "Fourth Year HPC",
-    "Fourth Year ES", "Fourth Year CN", "Final Year SE","Final Year KE", "Final Year BIS", "Final Year HPC", "Final Year ES", "Final Year CN"];
+  List _majors = [
+    "First Year",
+    "Second Year",
+    "Third Year CS",
+    "Third Year CT",
+    "Fourth Year SE",
+    "Fourth Year KE",
+    "Fourth Year BIS",
+    "Fourth Year HPC",
+    "Fourth Year ES",
+    "Fourth Year CN",
+    "Final Year SE",
+    "Final Year KE",
+    "Final Year BIS",
+    "Final Year HPC",
+    "Final Year ES",
+    "Final Year CN"
+  ];
   List _nationalities = ["တိုင်းရင်းသား", "နိုင်ငံခြားသား"];
   List _bloods = ["အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး"];
+
 //  final List<String> _dropdownValues = [
 //    "အိုသွေး",
 //    "အေသွေး",
@@ -95,22 +116,24 @@ class _State extends State<Form1> {
 //    "အေဘီသွေး"
 //  ];
   List<DropdownMenuItem<String>> _dropDownMenuMajors;
-  List<DropdownMenuItem<String>> _dropDownMenuNationalities;
+  List<DropdownMenuItem<String>> _dropDownMenuCitizenships;
   List<DropdownMenuItem<String>> _dropDownMenuBloods;
   String _selectedMajor = "First Year";
-  String _selectedNationality = "တိုင်းရင်းသား";
+  String _selectedCitizenship = "တိုင်းရင်းသား";
   String _selectedBlood = "အိုသွေး";
   String _NRC;
 
   int _radioValue1 = -1;
   int correctScore = 0;
+
   @override
   void initState() {
     _codes = List.from(_codes)..addAll(nrc.getCodes());
     _dropDownMenuMajors = buildAndGetDropDownMenuMajors(_majors);
     _selectedMajor = _dropDownMenuMajors[0].value;
-    _dropDownMenuNationalities = buildAndGetDropDownMenuNationalities(_nationalities);
-    _selectedNationality = _dropDownMenuNationalities[0].value;
+    _dropDownMenuCitizenships =
+        buildAndGetDropDownMenuNationalities(_nationalities);
+    _selectedCitizenship = _dropDownMenuCitizenships[0].value;
     _dropDownMenuBloods = buildAndGetDropDownMenuBloods(_bloods);
     _selectedBlood = _dropDownMenuBloods[0].value;
     super.initState();
@@ -138,56 +161,56 @@ class _State extends State<Form1> {
               child: Scaffold(
                   appBar: AppBar(title: Text('Student Registration')),
                   endDrawer: new Drawer(
-                      child: new Column(
-                          children: <Widget>[
-                            new UserAccountsDrawerHeader(
-                              accountName: new Text("$username",
-                                  style: new TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0)
-                              ),
-                              accountEmail: new Text("firstname@lastname.com",
-                                  style: new TextStyle(color: Colors.blueGrey[50])
-                              ),
-                              currentAccountPicture: new CircleAvatar(
-                                  backgroundColor: Colors.brown,
-                                  child: new Text("FL")
-                              ),
-                            ),
-                            new ListTile(
-                              leading: Icon(Icons.account_circle),
-                              title: new Text('My Profile'),
-                              onTap: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()),);
-                              },
-                            ),
-
-                            new ListTile(
-                              leading: Icon(Icons.error_outline),
-                              title: new Text('Terms & Regulations'),
-                              onTap: () {
-                                this.setState(() {});
-                                Navigator.pop(context);
-                              },
-                            ),
-                            new ListTile(
-                              title: Text("Dark Theme"),
-                              trailing: Switch(
-                                value: darkThemeEnabled,
-                                onChanged: (changedTheme) {
-                                  setState(() {
-                                    darkThemeEnabled = changedTheme;
-                                  });
-                                },
-                              ),
-                            ),
-                            new Divider(),
-                            new ListTile(
-                              leading: Icon(Icons.power_settings_new),
-                              title: new Text('Logout'),
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()),);
-                              },
-                            ),
-                          ])),
+                      child: new Column(children: <Widget>[
+                    new UserAccountsDrawerHeader(
+                      accountName: new Text("$username",
+                          style: new TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0)),
+                      accountEmail: new Text("firstname@lastname.com",
+                          style: new TextStyle(color: Colors.blueGrey[50])),
+                      currentAccountPicture: new CircleAvatar(
+                          backgroundColor: Colors.brown, child: new Text("FL")),
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.account_circle),
+                      title: new Text('My Profile'),
+                      onTap: () {
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()),);
+                      },
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.error_outline),
+                      title: new Text('Terms & Regulations'),
+                      onTap: () {
+                        this.setState(() {});
+                        Navigator.pop(context);
+                      },
+                    ),
+                    new ListTile(
+                      title: Text("Dark Theme"),
+                      trailing: Switch(
+                        value: darkThemeEnabled,
+                        onChanged: (changedTheme) {
+                          setState(() {
+                            darkThemeEnabled = changedTheme;
+                          });
+                        },
+                      ),
+                    ),
+                    new Divider(),
+                    new ListTile(
+                      leading: Icon(Icons.power_settings_new),
+                      title: new Text('Logout'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                        );
+                      },
+                    ),
+                  ])),
                   body: SingleChildScrollView(
                     child: new Form(
                       key: _formKey,
@@ -202,11 +225,13 @@ class _State extends State<Form1> {
                               children: <Widget>[
                                 Padding(
                                     padding: EdgeInsets.only(left: 12.5),
-                                    child: Icon(Icons.list)
-                                ),
+                                    child: Icon(Icons.list)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("မေဂျာ", style: new TextStyle(fontSize: 16.5,  color: Colors.black),
+                                    child: Text(
+                                      "မေဂျာ",
+                                      style: new TextStyle(
+                                          fontSize: 16.5, color: Colors.black),
                                     )),
                                 Padding(
                                     padding: EdgeInsets.only(left: 75.0),
@@ -234,7 +259,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: uniID,
+                              controller: uno,
                               decoration: InputDecoration(
                                 labelText: 'တက္ကသိုလ်မှတ်ပုံတင်အမှတ်',
                                 prefixIcon: Icon(Icons.book),
@@ -249,7 +274,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: uniStart,
+                              controller: startingyear,
                               decoration: InputDecoration(
                                 labelText: 'တက္ကသိုလ်ဝင်ရောက်သည့်ခုနှစ်',
                                 prefixIcon: Icon(Icons.today),
@@ -265,11 +290,15 @@ class _State extends State<Form1> {
                             const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.center,
-                              child: Text('ကျောင်းသား/သူ', style: TextStyle(fontSize: 16.5, color: Colors.black, fontStyle: FontStyle.italic)),
+                              child: Text('ကျောင်းသား/သူ',
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic)),
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: mmName,
+                              controller: mmSName,
                               decoration: InputDecoration(
                                 labelText: 'အမည် (မြန်မာလို)',
                                 prefixIcon: Icon(Icons.person),
@@ -284,7 +313,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: engName,
+                              controller: enSName,
                               decoration: InputDecoration(
                                 labelText: 'အမည် (အင်္ဂလိပ်လို)',
                                 prefixIcon: Icon(Icons.person),
@@ -298,11 +327,11 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: ethnic,
+                              controller: nationality,
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -331,7 +360,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: birthPlace,
+                              controller: hometown,
                               decoration: InputDecoration(
                                 labelText: 'မွေးဖွားရာဇာတိ',
                                 prefixIcon: Icon(Icons.room),
@@ -347,7 +376,7 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: township,
                               decoration: InputDecoration(
-                                labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း',
+                                labelText: 'မြို့နယ်',
                                 prefixIcon: Icon(Icons.edit_location),
                               ),
                               validator: (String value) {
@@ -358,7 +387,25 @@ class _State extends State<Form1> {
                               },
                             ),
                             const SizedBox(height: 16.0),
-                            Text('မှတ်ပုံတင်အမှတ်', style: TextStyle(fontSize: 15.0, color: Colors.black,)),
+                            TextFormField(
+                              controller: division,
+                              decoration: InputDecoration(
+                                labelText: 'ပြည်နယ်/တိုင်း',
+                                prefixIcon: Icon(Icons.edit_location),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'မြို့နယ်/ပြည်နယ်/တိုင်းထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            Text('မှတ်ပုံတင်အမှတ်',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                )),
                             const SizedBox(height: 8.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
@@ -484,7 +531,6 @@ class _State extends State<Form1> {
                                 ),
                               ],
                             ),
-
                             const SizedBox(height: 16.0),
                             Row(
                               children: <Widget>[
@@ -493,19 +539,20 @@ class _State extends State<Form1> {
                                     child: Icon(Icons.flag)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("နိုင်ငံခြားသား", style: new TextStyle(fontSize: 15.0, color: Colors.black))
-                                ),
+                                    child: Text("နိုင်ငံခြားသား",
+                                        style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
-                                      items: _dropDownMenuNationalities,
-                                      value: _selectedNationality,
-                                      onChanged: changedDropDownNationality,
-                                      hint: Text(_selectedNationality),
+                                      items: _dropDownMenuCitizenships,
+                                      value: _selectedCitizenship,
+                                      onChanged: changedDropDownCitizenship,
+                                      hint: Text(_selectedCitizenship),
                                     )),
                               ],
                             ),
-
                             const SizedBox(height: 16.0),
                             RaisedButton(
                               shape: RoundedRectangleBorder(
@@ -520,11 +567,11 @@ class _State extends State<Form1> {
                                     minTime: DateTime(1997, 1, 1),
                                     maxTime: DateTime(2022, 12, 31),
                                     onConfirm: (date) {
-                                      print('confirm $date');
-                                      _date =
+                                  print('confirm $date');
+                                  _date =
                                       '${date.year} - ${date.month} - ${date.day}';
-                                      setState(() {});
-                                    },
+                                  setState(() {});
+                                },
                                     currentTime: DateTime.now(),
                                     locale: LocaleType.en);
                               },
@@ -533,7 +580,7 @@ class _State extends State<Form1> {
                                 height: 50.0,
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
@@ -569,8 +616,10 @@ class _State extends State<Form1> {
                                     child: Icon(Icons.favorite)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("သွေးအုပ်စု", style: new TextStyle(fontSize: 15.0, color: Colors.black))
-                                ),
+                                    child: Text("သွေးအုပ်စု",
+                                        style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
@@ -601,7 +650,7 @@ class _State extends State<Form1> {
                               controller: matriculationRoll,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
                                 prefixIcon: Icon(Icons.book),
                               ),
                               keyboardType: TextInputType.text,
@@ -619,7 +668,7 @@ class _State extends State<Form1> {
                               controller: matriculationYear,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုနှစ်',
                                 prefixIcon: Icon(Icons.calendar_today),
                               ),
                               keyboardType: TextInputType.number,
@@ -635,7 +684,7 @@ class _State extends State<Form1> {
                               controller: matriculationDept,
                               decoration: InputDecoration(
                                 labelText:
-                                'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
+                                    'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်စာစစ်ဌာန',
                                 prefixIcon: Icon(Icons.business),
                               ),
                               keyboardType: TextInputType.text,
@@ -650,9 +699,10 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: livingAddress,
+                              controller: address,
                               decoration: InputDecoration(
-                                labelText: 'အမြဲတမ်းနေထိုင်သည့်လိပ်စာ',//(အပြည့်အစုံ)
+                                labelText: 'အမြဲတမ်းနေထိုင်သည့်လိပ်စာ',
+                                //(အပြည့်အစုံ)
                                 prefixIcon: Icon(Icons.add_location),
                               ),
                               validator: (String value) {
@@ -665,11 +715,15 @@ class _State extends State<Form1> {
                             const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.center,
-                              child: Text('အဘ', style: TextStyle(fontSize: 16.5, color: Colors.black, fontStyle: FontStyle.italic)),
+                              child: Text('အဘ',
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic)),
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: fatherName,
+                              controller: mmfatherName,
                               decoration: InputDecoration(
                                 labelText: 'အမည် (မြန်မာ)',
                                 prefixIcon: Icon(Icons.business_center),
@@ -686,11 +740,26 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: fatherEthnic,
+                              controller: enfatherName,
+                              decoration: InputDecoration(
+                                labelText: 'အမည် (English)',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: f_nationality,
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -703,7 +772,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: fatherReligion,
+                              controller: fatherHometown,
                               decoration: InputDecoration(
                                 labelText: 'ကိုးကွယ်သည့်ဘာသာ',
                                 prefixIcon: Icon(Icons.info),
@@ -735,12 +804,26 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: fatherTownship,
                               decoration: InputDecoration(
-                                labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း',
+                                labelText: 'မြို့နယ်',
                                 prefixIcon: Icon(Icons.edit_location),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
-                                  return 'ပြည်နယ်/တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
+                                  return 'မြို့နယ်ထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: fatherDivision,
+                              decoration: InputDecoration(
+                                labelText: 'တိုင်း',
+                                prefixIcon: Icon(Icons.edit_location),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
                                 } else
                                   return null;
                               },
@@ -879,15 +962,17 @@ class _State extends State<Form1> {
                                     child: Icon(Icons.flag)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("နိုင်ငံခြားသား", style: new TextStyle(fontSize: 15.0, color: Colors.black))
-                                ),
+                                    child: Text("နိုင်ငံခြားသား",
+                                        style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
-                                      items: _dropDownMenuNationalities,
-                                      value: _selectedNationality,
-                                      onChanged: changedDropDownNationality,
-                                      hint: Text(_selectedNationality),
+                                      items: _dropDownMenuCitizenships,
+                                      value: _selectedCitizenship,
+                                      onChanged: changedDropDownCitizenship,
+                                      hint: Text(_selectedCitizenship),
                                     )),
                               ],
                             ),
@@ -965,15 +1050,18 @@ class _State extends State<Form1> {
                                   return null;
                               },
                             ),
-
                             const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.center,
-                              child: Text('အမိ', style: TextStyle(fontSize: 16.5, color: Colors.black, fontStyle: FontStyle.italic)),
+                              child: Text('အမိ',
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic)),
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: motherName,
+                              controller: mmmotherName,
                               decoration: InputDecoration(
                                 labelText: 'အမည် (မြန်မာလို)',
                                 prefixIcon: Icon(Icons.business_center),
@@ -990,11 +1078,26 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: motherEthnic,
+                              controller: enmotherName,
+                              decoration: InputDecoration(
+                                labelText: 'အမည် (English)',
+                                prefixIcon: Icon(Icons.business_center),
+                              ),
+                              keyboardType: TextInputType.text,
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'ထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: m_nationality,
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး',
                                 prefixIcon:
-                                Icon(Icons.sentiment_very_satisfied),
+                                    Icon(Icons.sentiment_very_satisfied),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
@@ -1068,7 +1171,6 @@ class _State extends State<Form1> {
                                           .map((String dropDownStringItem) {
                                         return DropdownMenuItem<String>(
                                           value: dropDownStringItem,
-
                                           child: Text(dropDownStringItem),
                                         );
                                       }).toList(),
@@ -1183,15 +1285,17 @@ class _State extends State<Form1> {
                                     child: Icon(Icons.flag)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
-                                    child: Text("နိုင်ငံခြားသား", style: new TextStyle(fontSize: 15.0, color: Colors.black))
-                                ),
+                                    child: Text("နိုင်ငံခြားသား",
+                                        style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black))),
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
-                                      items: _dropDownMenuNationalities,
-                                      value: _selectedNationality,
-                                      onChanged: changedDropDownNationality,
-                                      hint: Text(_selectedNationality),
+                                      items: _dropDownMenuCitizenships,
+                                      value: _selectedCitizenship,
+                                      onChanged: changedDropDownCitizenship,
+                                      hint: Text(_selectedCitizenship),
                                     )),
                               ],
                             ),
@@ -1269,11 +1373,15 @@ class _State extends State<Form1> {
                                   return null;
                               },
                             ),
-
                             const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.center,
-                              child: Text('ပညာသင်ထောက်ပံ့‌ကြေးပေးရန်မေတ္တာရပ်ခံခြင်းပြု/မပြု', style: TextStyle(fontSize: 16.5, color: Colors.black, fontStyle: FontStyle.italic)),
+                              child: Text(
+                                  'ပညာသင်ထောက်ပံ့‌ကြေးပေးရန်မေတ္တာရပ်ခံခြင်းပြု/မပြု',
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic)),
                             ),
                             new Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -1283,308 +1391,363 @@ class _State extends State<Form1> {
                                   groupValue: _radioValue1,
                                   onChanged: _handleRadioValueChange1,
                                 ),
-                                new Text('ပြု', style: new TextStyle(fontSize: 16.0)),
+                                new Text('ပြု',
+                                    style: new TextStyle(fontSize: 16.0)),
                                 new Radio(
                                   value: 1,
                                   groupValue: _radioValue1,
                                   onChanged: _handleRadioValueChange1,
                                 ),
-                                new Text('မပြု', style: new TextStyle(fontSize: 16.0)),
+                                new Text('မပြု',
+                                    style: new TextStyle(fontSize: 16.0)),
                               ],
                             ),
-
                             const SizedBox(height: 16.0),
                             Align(
                               alignment: Alignment.center,
-                              child: Text('ကျောင်းနေရန်အထောက်အပံ့ပေးမည့်ပုဂ္ဂိုလ်', style: TextStyle(fontSize: 16.5, color: Colors.black, fontStyle: FontStyle.italic)),
+                              child: Text(
+                                  'ကျောင်းနေရန်အထောက်အပံ့ပေးမည့်ပုဂ္ဂိုလ်',
+                                  style: TextStyle(
+                                      fontSize: 16.5,
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.italic)),
                             ),
-                              new Row(
+                            new Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 new InkWell(
                                     onTap: () {
-                                      visibilityDad ? null : _changed(true, "dad");
+                                      visibilityDad
+                                          ? null
+                                          : _changed(true, "dad");
                                     },
                                     child: new Container(
                                       margin: new EdgeInsets.only(top: 16.0),
                                       child: new Column(
                                         children: <Widget>[
-                                          new Icon(Icons.person, color: visibilityDad ? Colors.grey[400] : Colors.grey[600]),
+                                          new Icon(Icons.person,
+                                              color: visibilityDad
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey[600]),
                                           new Container(
-                                            margin: const EdgeInsets.only(top: 8.0),
+                                            margin:
+                                                const EdgeInsets.only(top: 8.0),
                                             child: new Text(
                                               "အဖေ",
                                               style: new TextStyle(
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.w400,
-                                                color: visibilityDad ? Colors.grey[400] : Colors.grey[600],
+                                                color: visibilityDad
+                                                    ? Colors.grey[400]
+                                                    : Colors.grey[600],
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    )
-                                ),
+                                    )),
                                 new SizedBox(width: 24.0),
                                 new InkWell(
                                     onTap: () {
-                                      visibilityMom ? null : _changed(true, "mom");
+                                      visibilityMom
+                                          ? null
+                                          : _changed(true, "mom");
                                     },
                                     child: new Container(
                                       margin: new EdgeInsets.only(top: 16.0),
                                       child: new Column(
                                         children: <Widget>[
-                                          new Icon(Icons.person, color: visibilityMom ? Colors.grey[400] : Colors.grey[600]),
+                                          new Icon(Icons.person,
+                                              color: visibilityMom
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey[600]),
                                           new Container(
-                                            margin: const EdgeInsets.only(top: 8.0),
+                                            margin:
+                                                const EdgeInsets.only(top: 8.0),
                                             child: new Text(
                                               "အမေ",
                                               style: new TextStyle(
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.w400,
-                                                color: visibilityMom ? Colors.grey[400] : Colors.grey[600],
+                                                color: visibilityMom
+                                                    ? Colors.grey[400]
+                                                    : Colors.grey[600],
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    )
-                                ),
+                                    )),
                                 new SizedBox(width: 24.0),
                                 new InkWell(
                                     onTap: () {
-                                      visibilityOther ? null : _changed(true, "other");
+                                      visibilityOther
+                                          ? null
+                                          : _changed(true, "other");
                                     },
                                     child: new Container(
                                       margin: new EdgeInsets.only(top: 16.0),
                                       child: new Column(
                                         children: <Widget>[
-                                          new Icon(Icons.person, color: visibilityOther ? Colors.grey[400] : Colors.grey[600]),
+                                          new Icon(Icons.person,
+                                              color: visibilityOther
+                                                  ? Colors.grey[400]
+                                                  : Colors.grey[600]),
                                           new Container(
-                                            margin: const EdgeInsets.only(top: 8.0),
+                                            margin:
+                                                const EdgeInsets.only(top: 8.0),
                                             child: new Text(
                                               "အခြား",
                                               style: new TextStyle(
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.w400,
-                                                color: visibilityOther ? Colors.grey[400] : Colors.grey[600],
+                                                color: visibilityOther
+                                                    ? Colors.grey[400]
+                                                    : Colors.grey[600],
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             Padding(
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        new Expanded(
-                                          flex: 11,
-                                          child: new TextFormField(
-                                            controller: proName,
+                                    visibilityOther
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              new Expanded(
+                                                flex: 11,
+                                                child: new TextFormField(
+                                                  controller: proName,
 //                                            style: Theme.of(context).textTheme.title,
-                                            decoration: new InputDecoration(
-                                                labelText: "အမည်",
-                                                prefixIcon: Icon(Icons.account_circle),
-                                                isDense: true
-                                            ),
-                                            validator: (String value) {
-                                              if (value.trim().isEmpty) {
-                                                return 'အမည်ထည့်ရန်လိုသည်';
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        new Expanded(
-                                          flex: 1,
-                                          child: new IconButton(
-                                            color: Colors.grey[400],
-                                            icon: const Icon(Icons.cancel, size: 22.0,),
-                                            onPressed: () {
-                                              _changed(false, "other");
-                                            },
-                                          ),
-                                        ),
-                              ],
-                            ) :
-                            new Container(),
-                                              ],
-                                            )
-                                      ),
+                                                  decoration:
+                                                      new InputDecoration(
+                                                          labelText: "အမည်",
+                                                          prefixIcon: Icon(Icons
+                                                              .account_circle),
+                                                          isDense: true),
+                                                  validator: (String value) {
+                                                    if (value.trim().isEmpty) {
+                                                      return 'အမည်ထည့်ရန်လိုသည်';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              new Expanded(
+                                                flex: 1,
+                                                child: new IconButton(
+                                                  color: Colors.grey[400],
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    size: 22.0,
+                                                  ),
+                                                  onPressed: () {
+                                                    _changed(false, "other");
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : new Container(),
+                                  ],
+                                )),
                             Padding(
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        new Expanded(
-                                          flex: 11,
-                                          child: new TextFormField(
-                                            controller: rs,
-                                            decoration: new InputDecoration(
-                                                labelText: "ဆွေမျိုးတော်စပ်ပုံ",
-                                                prefixIcon: Icon(Icons.people),
-                                                isDense: true
-                                            ),
-                                            validator: (String value) {
-                                              if (value.trim().isEmpty) {
-                                                return 'ထည့်ရန်လိုသည်';
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        new Expanded(
-                                          flex: 1,
-                                          child: new IconButton(
-                                            color: Colors.grey[400],
-                                            icon: const Icon(Icons.cancel, size: 22.0,),
-                                            onPressed: () {
-                                              _changed(false, "other");
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ) :
-                                    new Container(),
+                                    visibilityOther
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              new Expanded(
+                                                flex: 11,
+                                                child: new TextFormField(
+                                                  controller: relationship,
+                                                  decoration: new InputDecoration(
+                                                      labelText:
+                                                          "ဆွေမျိုးတော်စပ်ပုံ",
+                                                      prefixIcon:
+                                                          Icon(Icons.people),
+                                                      isDense: true),
+                                                  validator: (String value) {
+                                                    if (value.trim().isEmpty) {
+                                                      return 'ထည့်ရန်လိုသည်';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              new Expanded(
+                                                flex: 1,
+                                                child: new IconButton(
+                                                  color: Colors.grey[400],
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    size: 22.0,
+                                                  ),
+                                                  onPressed: () {
+                                                    _changed(false, "other");
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : new Container(),
                                   ],
-                                )
-                            ),
+                                )),
                             Padding(
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        new Expanded(
-                                          flex: 11,
-                                          child: new TextFormField(
-                                            controller: proJob,
-                                            decoration: new InputDecoration(
-                                                labelText: 'အလုပ်အကိုင်',
-                                                prefixIcon: Icon(Icons.business_center),
-                                                isDense: true
-                                            ),
-                                            validator: (String value) {
-                                              if (value.trim().isEmpty) {
-                                                return 'ထည့်ရန်လိုသည်';
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        new Expanded(
-                                          flex: 1,
-                                          child: new IconButton(
-                                            color: Colors.grey[400],
-                                            icon: const Icon(Icons.cancel, size: 22.0,),
-                                            onPressed: () {
-                                              _changed(false, "other");
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ) :
-                                    new Container(),
+                                    visibilityOther
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              new Expanded(
+                                                flex: 11,
+                                                child: new TextFormField(
+                                                  controller: proJob,
+                                                  decoration:
+                                                      new InputDecoration(
+                                                          labelText:
+                                                              'အလုပ်အကိုင်',
+                                                          prefixIcon: Icon(Icons
+                                                              .business_center),
+                                                          isDense: true),
+                                                  validator: (String value) {
+                                                    if (value.trim().isEmpty) {
+                                                      return 'ထည့်ရန်လိုသည်';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              new Expanded(
+                                                flex: 1,
+                                                child: new IconButton(
+                                                  color: Colors.grey[400],
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    size: 22.0,
+                                                  ),
+                                                  onPressed: () {
+                                                    _changed(false, "other");
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : new Container(),
                                   ],
-                                )
-                            ),
+                                )),
                             Padding(
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        new Expanded(
-                                          flex: 11,
-                                          child: new TextFormField(
-                                            controller: proAddress,
-                                            decoration: new InputDecoration(
-                                                labelText: 'ဆက်သွယ်ရန်လိပ်စာ',
-                                                prefixIcon: Icon(Icons.add_location),
-                                                isDense: true
-                                            ),
-                                            validator: (String value) {
-                                              if (value.trim().isEmpty) {
-                                                return 'လိပ်စာထည့်ရန်လိုသည်';
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        new Expanded(
-                                          flex: 1,
-                                          child: new IconButton(
-                                            color: Colors.grey[400],
-                                            icon: const Icon(Icons.cancel, size: 22.0,),
-                                            onPressed: () {
-                                              _changed(false, "other");
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ) :
-                                    new Container(),
+                                    visibilityOther
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              new Expanded(
+                                                flex: 11,
+                                                child: new TextFormField(
+                                                  controller: proAddress,
+                                                  decoration:
+                                                      new InputDecoration(
+                                                          labelText:
+                                                              'ဆက်သွယ်ရန်လိပ်စာ',
+                                                          prefixIcon: Icon(Icons
+                                                              .add_location),
+                                                          isDense: true),
+                                                  validator: (String value) {
+                                                    if (value.trim().isEmpty) {
+                                                      return 'လိပ်စာထည့်ရန်လိုသည်';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              new Expanded(
+                                                flex: 1,
+                                                child: new IconButton(
+                                                  color: Colors.grey[400],
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    size: 22.0,
+                                                  ),
+                                                  onPressed: () {
+                                                    _changed(false, "other");
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : new Container(),
                                   ],
-                                )
-                            ),
+                                )),
                             Padding(
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        new Expanded(
-                                          flex: 11,
-                                          child: new TextFormField(
-                                            controller: proPhoneNum,
-                                            decoration: new InputDecoration(
-                                                labelText: 'ဖုန်းနံပါတ်',
-                                                prefixIcon: Icon(Icons.call),
-                                                isDense: true
-                                            ),
-                                            keyboardType: TextInputType.number,
-                                            validator: (String value) {
-                                              if (value.trim().isEmpty) {
-                                                return 'ဖုန်းနံပါတ်ထည့်ရန်လိုသည်';
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        new Expanded(
-                                          flex: 1,
-                                          child: new IconButton(
-                                            color: Colors.grey[400],
-                                            icon: const Icon(Icons.cancel, size: 22.0,),
-                                            onPressed: () {
-                                              _changed(false, "other");
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ) :
-                                    new Container(),
+                                    visibilityOther
+                                        ? Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              new Expanded(
+                                                flex: 11,
+                                                child: new TextFormField(
+                                                  controller: proPhoneNum,
+                                                  decoration:
+                                                      new InputDecoration(
+                                                          labelText:
+                                                              'ဖုန်းနံပါတ်',
+                                                          prefixIcon:
+                                                              Icon(Icons.call),
+                                                          isDense: true),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  validator: (String value) {
+                                                    if (value.trim().isEmpty) {
+                                                      return 'ဖုန်းနံပါတ်ထည့်ရန်လိုသည်';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              new Expanded(
+                                                flex: 1,
+                                                child: new IconButton(
+                                                  color: Colors.grey[400],
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    size: 22.0,
+                                                  ),
+                                                  onPressed: () {
+                                                    _changed(false, "other");
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : new Container(),
                                   ],
-                                )
-                            ),
-
+                                )),
                             const SizedBox(height: 16.0),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   new Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       RaisedButton(
                                         padding: EdgeInsets.all(0.0),
@@ -1594,11 +1757,11 @@ class _State extends State<Form1> {
                                               context: context,
                                               builder: (BuildContext context) =>
                                                   CustomDialog(
-                                                    title: "Success",
-                                                    description:
+                                                title: "Success",
+                                                description:
                                                     "Successfully Submitted",
-                                                    buttonText: "Ok",
-                                                  ),
+                                                buttonText: "Ok",
+                                              ),
                                             );
                                             _submit();
                                           }
@@ -1673,13 +1836,13 @@ class _State extends State<Form1> {
 
   void _changed(bool visibility, String field) {
     setState(() {
-      if (field == "dad"){
+      if (field == "dad") {
         visibilityDad = visibility;
       }
-      if (field == "mom"){
+      if (field == "mom") {
         visibilityMom = visibility;
       }
-      if (field == "other"){
+      if (field == "other") {
         visibilityOther = visibility;
       }
     });
@@ -1688,62 +1851,72 @@ class _State extends State<Form1> {
   void _submit() async {
     if (_validateForm()) {
       _NRC = _selectedCode + _selectedCodeName + newValue + nrcNum.text;
-      await http.post("https://uitonlinereg.000webhostapp.com/insert.php", body: {
-        "mmName": mmName.text,
-        "engName": engName.text,
-        "major":_selectedMajor,
-        "roll": roll.text,
-        "uniID": uniID.text,
-        "uniStart": uniStart.text,
-        "ethnic": ethnic.text,
-        "father_ethnic": fatherEthnic.text,
-        "mother_ethnic": motherEthnic.text,
+      await http
+          .post("https://uitonlinereg.000webhostapp.com//insert.php", body: {
+        "uno": uno.text,
+        "startingyear": startingyear.text,
+        "mmSName": mmSName.text,
+        "enSName": enSName.text,
+        "nationality": nationality.text,
         "religion": religion.text,
-        "father_religion": fatherReligion.text,
-        "mother_religion": motherReligion.text,
-        "birthPlace": birthPlace.text,
-        "father_birthPlace": fatherBirthPlace.text,
-        "mother_birthPlace": motherBirthPlace.text,
-        "NRC": _NRC,
-        "nationality": _selectedNationality,
+        "hometown": hometown.text,
         "township": township.text,
-        "father_township": fatherTownship.text,
-        "mother_township": motherTownship.text,
-        "phone": phone.text,
-        "father_phone": fatherPhone.text,
-        "mother_phone": motherPhone.text,
-        "fatherName": fatherName.text,
-        "fatherAddress": fatherAddress.text,
-        "motherName": motherName.text,
-        "motherAddress": motherAddress.text,
-        "fatherJob": fatherJob.text,
-        "father_position": fatherPosition.text,
-        "father_dept": fatherDept.text,
-        "motherJob": motherJob.text,
-        "father_birthPlace": fatherBirthPlace.text,
-        "mother_birthPlace": motherBirthPlace.text,
-        "mother_position": motherPosition.text,
-        "mother_dept": motherDept.text,
-        "birthday": _date,
-        "bloodType": _selectedBlood,
-        "livingAddress": livingAddress.text,
-        "matriRoll": matriculationRoll.text,
+        "division": division.text,
+        "nrc": _NRC,
+        "citizenship": _selectedCitizenship,
+        "dateOfBirth": _date,
+        "bloodtype": _selectedBlood,
+        "phoneNo": phone.text,
+        "matriRollNo": matriculationRoll.text,
         "matriYear": matriculationYear.text,
-        "matriDept": matriculationDept.text,
-        "proName": proName.text,
-        "rs": relationship.text,
-        "proJob": proJob.text,
-        "proAddress": proAddress.text,
-        "proPhoneNum": proPhoneNum.text,
+        "matriexamdept": matriculationDept.text,
+        "address": address.text,
+        "major": _selectedMajor,
+        "roll": roll.text,
+        "mmFName": mmfatherName.text,
+        "enFName": enfatherName.text,
+        "f_nationality": f_nationality.text,
+        "f_religion": fatherReligion.text,
+        "f_hometown": fatherBirthPlace.text,
+        "f_township": fatherTownship.text,
+        "f_division": fatherDivision.text,
+        "f_Job": fatherJob.text,
+        "f_position": fatherPosition.text,
+        "f_department": fatherDept.text,
+        "f_address": fatherAddress.text,
+        "f_phoneNo": fatherPhone.text,
+        "mmMName": mmmotherName.text,
+        "enMName": enmotherName.text,
+        "m_nationality": m_nationality.text,
+        "m_religion": motherReligion.text,
+        "m_hometown": motherBirthPlace.text,
+        "m_township": fatherTownship.text,
+        "m_division": fatherDivision.text,
+        "m_Job": motherJob.text,
+        "m_position": motherPosition.text,
+        "m_department": motherDept.text,
+        "m_address": motherAddress.text,
+        "m_phoneNo": motherPhone.text,
+        "dateOfBirth": _date,
+        "bloodtype": _selectedBlood,
+        "address": address.text,
+        "matriRollNo": matriculationRoll.text,
+        "matriYear": matriculationYear.text,
+        "matriexamDept": matriculationDept.text,
+        "pName": proName.text,
+        "relationship": relationship.text,
+        "job": proJob.text,
+        "p_address": proAddress.text,
+        "p_phoneNo": proPhoneNum.text,
       });
-      await http.post("https://uitonlinereg.000webhostapp.com//setStatus.php", body: {
-        "engName": engName.text,
+      await http
+          .post("https://uitonlinereg.000webhostapp.com//setStatus.php", body: {
+        "enSName": enSName.text,
         "NRC": _NRC,
         "matriRoll": matriculationRoll.text,
-        "uniID": uniID.text,
-        "fatherName": fatherName.text,
+        "uno": uno.text,
+        "fatherName": mmfatherName.text,
       });
-
     }
   }
 
@@ -1776,16 +1949,17 @@ class _State extends State<Form1> {
     return items;
   }
 
-  void changedDropDownNationality(String selectedNationality) {
+  void changedDropDownCitizenship(String selectedCitizenship) {
     setState(() {
-      _selectedNationality = selectedNationality;
+      _selectedCitizenship = selectedCitizenship;
     });
   }
 
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuNationalities(List nationalities) {
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuNationalities(
+      List nationalities) {
     List<DropdownMenuItem<String>> items = List();
-    for (String nationality in nationalities) {
-      items.add(DropdownMenuItem(value: nationality, child: Text(nationality)));
+    for (String Citizenship in nationalities) {
+      items.add(DropdownMenuItem(value: Citizenship, child: Text(Citizenship)));
     }
     return items;
   }
@@ -1804,5 +1978,3 @@ class _State extends State<Form1> {
     return items;
   }
 }
-
-
