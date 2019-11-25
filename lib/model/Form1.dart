@@ -1,18 +1,15 @@
 import 'package:connection_status_bar/connection_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-//import 'package:flutter_app/model/ProfilePage.dart';
-
+import 'package:flutter_app/model/term.dart';
 import 'package:flutter_app/validation/burmeseRegEx.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
-//import 'package:fluttertoast/fluttertoast.dart';
 import '../SA.dart';
 import '../ThemeData.dart';
 import '../widgets/widgets.dart';
 import 'CustomDialog.dart';
-
 import '../NRC_db/getNRC.dart';
+
 import 'package:http/http.dart' as http;
 
 class Form1 extends StatefulWidget {
@@ -31,6 +28,7 @@ class _State extends State<Form1> {
   DateTime date2 = new DateTime.now();
   burmeseRegEx regEx = new burmeseRegEx();
 
+  TextEditingController roll = new TextEditingController();
   TextEditingController uno = new TextEditingController();
   TextEditingController startingyear = new TextEditingController();
   TextEditingController mmSName = new TextEditingController();
@@ -47,34 +45,38 @@ class _State extends State<Form1> {
   TextEditingController matriculationYear = new TextEditingController();
   TextEditingController matriculationDept = new TextEditingController();
   TextEditingController address = new TextEditingController();
-  TextEditingController roll = new TextEditingController();
+
   TextEditingController mmfatherName = new TextEditingController();
   TextEditingController enfatherName = new TextEditingController();
-  TextEditingController f_nationality = new TextEditingController();
+  TextEditingController fatherNationality = new TextEditingController();
   TextEditingController fatherReligion = new TextEditingController();
   TextEditingController fatherHometown = new TextEditingController();
   TextEditingController fatherTownship = new TextEditingController();
   TextEditingController fatherDivision = new TextEditingController();
+  TextEditingController fathernrcNum = new TextEditingController();
   TextEditingController fatherJob = new TextEditingController();
   TextEditingController fatherPosition = new TextEditingController();
   TextEditingController fatherDept = new TextEditingController();
   TextEditingController fatherBirthPlace = new TextEditingController();
   TextEditingController fatherAddress = new TextEditingController();
   TextEditingController fatherPhone = new TextEditingController();
+  TextEditingController fNrcNum = new TextEditingController();
 
   TextEditingController mmmotherName = new TextEditingController();
   TextEditingController enmotherName = new TextEditingController();
-  TextEditingController m_nationality = new TextEditingController();
+  TextEditingController motherNationality = new TextEditingController();
   TextEditingController motherReligion = new TextEditingController();
   TextEditingController motherHometown = new TextEditingController();
   TextEditingController motherTownship = new TextEditingController();
   TextEditingController motherDivision = new TextEditingController();
+  TextEditingController mothernrcNum = new TextEditingController();
   TextEditingController motherJob = new TextEditingController();
   TextEditingController motherPosition = new TextEditingController();
   TextEditingController motherDept = new TextEditingController();
   TextEditingController motherBirthPlace = new TextEditingController();
   TextEditingController motherAddress = new TextEditingController();
   TextEditingController motherPhone = new TextEditingController();
+  TextEditingController mNrcNum = new TextEditingController();
 
   TextEditingController proName = new TextEditingController();
   TextEditingController relationship = new TextEditingController();
@@ -82,46 +84,54 @@ class _State extends State<Form1> {
   TextEditingController proAddress = new TextEditingController();
   TextEditingController proPhoneNum = new TextEditingController();
 
-  List<String> _codes = [".."];
-  List<String> _codeNames = [".."];
+  List<String> _codes = ["..."];
+  List<String> _codeNames = ["..."];
   String _selectedCode;
   String _selectedCodeName;
   String newValue;
+  List<String> _Fcodes = ["..."];
+  List<String> _FcodeNames = ["..."];
+  String _selectedFCode;
+  String _selectedFCodeName;
+  String FnewValue;
+  List<String> _Mcodes = ["..."];
+  List<String> _McodeNames = ["..."];
+  String _selectedMCode;
+  String _selectedMCodeName;
+  String MnewValue;
+
   String _date = "မွေးသက္ကရာဇ်";
+
+//  List _majors = ["First Year", "Second Year", "Third Year CS", "Third Year CT", "Fourth Year SE","Fourth Year KE", "Fourth Year BIS", "Fourth Year HPC",
+//    "Fourth Year ES", "Fourth Year CN", "Final Year SE","Final Year KE", "Final Year BIS", "Final Year HPC", "Final Year ES", "Final Year CN"];
   List _majors = [
     "First Year",
     "Second Year",
-    "Third Year CS",
-    "Third Year CT",
-    "Fourth Year SE",
-    "Fourth Year KE",
-    "Fourth Year BIS",
-    "Fourth Year HPC",
-    "Fourth Year ES",
-    "Fourth Year CN",
-    "Final Year SE",
-    "Final Year KE",
-    "Final Year BIS",
-    "Final Year HPC",
-    "Final Year ES",
-    "Final Year CN"
+    "Third Year",
+    "Fourth Year",
+    "Final Year"
   ];
-  List _nationalities = ["တိုင်းရင်းသား", "နိုင်ငံခြားသား"];
+  List _subjects = ["...", "CS", "CT", "SE", "KE", "BIS", "HPC", "ES", "CN"];
+  List _citizenships = ["တိုင်းရင်းသား", "နိုင်ငံခြားသား"];
+  List _fcitizenships = ["တိုင်းရင်းသား", "နိုင်ငံခြားသား"];
+  List _mcitizenships = ["တိုင်းရင်းသား", "နိုင်ငံခြားသား"];
   List _bloods = ["အိုသွေး", "အေသွေး", "ဘီသွေး", "အေဘီသွေး"];
 
-//  final List<String> _dropdownValues = [
-//    "အိုသွေး",
-//    "အေသွေး",
-//    "ဘီသွေး",
-//    "အေဘီသွေး"
-//  ];
   List<DropdownMenuItem<String>> _dropDownMenuMajors;
+  List<DropdownMenuItem<String>> _dropDownMenuSubjects;
   List<DropdownMenuItem<String>> _dropDownMenuCitizenships;
+  List<DropdownMenuItem<String>> _dropDownMenuFCitizenships;
+  List<DropdownMenuItem<String>> _dropDownMenuMCitizenships;
   List<DropdownMenuItem<String>> _dropDownMenuBloods;
   String _selectedMajor = "First Year";
+  String _selectedSubject = "....";
   String _selectedCitizenship = "တိုင်းရင်းသား";
+  String _selectedFCitizenship = "တိုင်းရင်းသား";
+  String _selectedMCitizenship = "တိုင်းရင်းသား";
   String _selectedBlood = "အိုသွေး";
   String _NRC;
+  String fatherNrc;
+  String motherNrc;
 
   int _radioValue1 = -1;
   int correctScore = 0;
@@ -129,11 +139,21 @@ class _State extends State<Form1> {
   @override
   void initState() {
     _codes = List.from(_codes)..addAll(nrc.getCodes());
+    _Fcodes = List.from(_Fcodes)..addAll(nrc.getCodes());
+    _Mcodes = List.from(_Fcodes)..addAll(nrc.getCodes());
     _dropDownMenuMajors = buildAndGetDropDownMenuMajors(_majors);
     _selectedMajor = _dropDownMenuMajors[0].value;
+    _dropDownMenuSubjects = buildAndGetDropDownMenuSubjects(_subjects);
+    _selectedSubject = _dropDownMenuSubjects[0].value;
     _dropDownMenuCitizenships =
-        buildAndGetDropDownMenuNationalities(_nationalities);
+        buildAndGetDropDownMenuCitizenships(_citizenships);
     _selectedCitizenship = _dropDownMenuCitizenships[0].value;
+    _dropDownMenuFCitizenships =
+        buildAndGetDropDownMenuFCitizenships(_fcitizenships);
+    _selectedFCitizenship = _dropDownMenuFCitizenships[0].value;
+    _dropDownMenuMCitizenships =
+        buildAndGetDropDownMenuMCitizenships(_mcitizenships);
+    _selectedMCitizenship = _dropDownMenuMCitizenships[0].value;
     _dropDownMenuBloods = buildAndGetDropDownMenuBloods(_bloods);
     _selectedBlood = _dropDownMenuBloods[0].value;
     super.initState();
@@ -159,7 +179,7 @@ class _State extends State<Form1> {
           children: <Widget>[
             Align(
               child: Scaffold(
-                  appBar: AppBar(title: Text('Student Registration')),
+                  appBar: AppBar(title: Text('၂၀၁၉-၂၀၂၀ ပညာသင်နှစ်')),
                   endDrawer: new Drawer(
                       child: new Column(children: <Widget>[
                     new UserAccountsDrawerHeader(
@@ -184,8 +204,10 @@ class _State extends State<Form1> {
                       leading: Icon(Icons.error_outline),
                       title: new Text('Terms & Regulations'),
                       onTap: () {
-                        this.setState(() {});
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Term()),
+                        );
                       },
                     ),
                     new ListTile(
@@ -220,12 +242,7 @@ class _State extends State<Form1> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Row(
-//                              crossAxisAlignment: CrossAxisAlignment.center,
-//                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Padding(
-                                    padding: EdgeInsets.only(left: 12.5),
-                                    child: Icon(Icons.list)),
                                 Padding(
                                     padding: EdgeInsets.only(left: 15.0),
                                     child: Text(
@@ -234,12 +251,28 @@ class _State extends State<Form1> {
                                           fontSize: 16.5, color: Colors.black),
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 75.0),
+//                                    padding: EdgeInsets.only(left: 75.0),
+                                    padding: EdgeInsets.only(left: 10.0),
                                     child: DropdownButton(
                                       items: _dropDownMenuMajors,
                                       value: _selectedMajor,
                                       onChanged: changedDropDownMajor,
                                       hint: Text(_selectedMajor),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      "ဘာသာရပ်",
+                                      style: new TextStyle(
+                                          fontSize: 16.5, color: Colors.black),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.only(left: 10.0),
+                                    child: DropdownButton(
+                                      items: _dropDownMenuSubjects,
+                                      value: _selectedSubject,
+                                      onChanged: changedDropDownSubject,
+                                      hint: Text(_selectedSubject),
                                     )),
                               ],
                             ),
@@ -301,12 +334,17 @@ class _State extends State<Form1> {
                               controller: mmSName,
                               decoration: InputDecoration(
                                 labelText: 'အမည် (မြန်မာလို)',
+                                hintText: 'မောင်/မ',
                                 prefixIcon: Icon(Icons.person),
                               ),
                               validator: (String value) {
-                                if (value.trim().isEmpty ||
-                                    regEx.validateMmInput(value)) {
-                                  return 'Myanmar လိုထည့်ရန်လိုသည်';
+                                if (value.trim().isEmpty) {
+                                  return 'နာမည်ထည့်ရန်လိုသည်';
+                                } else if (regEx.validateMmInput(value)) {
+                                  return 'မြန်မာလိုထည့်ရန်လိုသည်';
+                                } else if (regEx.validateMmBoyName(value) &&
+                                    regEx.validateMmGirlName(value)) {
+                                  return 'Format အမှန်ထည့်ရန်လိုသည်';
                                 } else
                                   return null;
                               },
@@ -395,7 +433,7 @@ class _State extends State<Form1> {
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
-                                  return 'မြို့နယ်/ပြည်နယ်/တိုင်းထည့်ရန်လိုသည်';
+                                  return 'ပြည်နယ်/တိုင်း‌ဒေသကြီးထည့်ရန်လိုသည်';
                                 } else
                                   return null;
                               },
@@ -412,10 +450,9 @@ class _State extends State<Form1> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('.../'),
@@ -442,10 +479,9 @@ class _State extends State<Form1> {
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
 
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
@@ -474,10 +510,9 @@ class _State extends State<Form1> {
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('(...)'),
@@ -506,10 +541,9 @@ class _State extends State<Form1> {
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
 
                                     child: TextFormField(
@@ -621,7 +655,7 @@ class _State extends State<Form1> {
                                             fontSize: 15.0,
                                             color: Colors.black))),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 85.0),
+                                    padding: EdgeInsets.only(left: 95.0),
                                     child: DropdownButton(
                                       items: _dropDownMenuBloods,
                                       value: _selectedBlood,
@@ -755,7 +789,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: f_nationality,
+                              controller: fatherNationality,
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး',
                                 prefixIcon:
@@ -818,31 +852,34 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: fatherDivision,
                               decoration: InputDecoration(
-                                labelText: 'တိုင်း',
+                                labelText: 'ပြည်နယ်/တိုင်း',
                                 prefixIcon: Icon(Icons.edit_location),
                               ),
                               validator: (String value) {
                                 if (value.trim().isEmpty) {
-                                  return 'တိုင်းဒေသကြီးထည့်ရန်လိုသည်';
+                                  return 'ပြည်နယ်/တိုင်း‌ဒေသကြီးထည့်ရန်လိုသည်';
                                 } else
                                   return null;
                               },
                             ),
                             const SizedBox(height: 16.0),
-                            Text('မှတ်ပုံတင်အမှတ်'),
+                            Text('မှတ်ပုံတင်အမှတ်',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                )),
                             const SizedBox(height: 8.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
-                                    // container defines the BoxConstraints of the children
+                                    width: 60,
+                                    // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
-                                      hint: Text('.../'),
+                                      hint: Text('../'),
                                       items: _codes
                                           .map((String dropDownStringItem) {
                                         return DropdownMenuItem<String>(
@@ -853,25 +890,24 @@ class _State extends State<Form1> {
                                       validator: (String value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'ထည့်ပါ';
-                                        } else if (_selectedCode
-                                            .contains('..')) {
+                                        } else if (_selectedFCode
+                                            .contains('../')) {
                                           return 'ထည့်ပါ';
                                         } else
                                           return null;
                                       },
                                       onChanged: (value) =>
-                                          _onSelectedCode(value),
-                                      value: _selectedCode,
+                                          _onSelectedFCode(value),
+                                      value: _selectedFCode,
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 60,
 
-                                    // container defines the BoxConstraints of the children
+                                    // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('...'),
                                       items: _codeNames
@@ -884,7 +920,7 @@ class _State extends State<Form1> {
                                       validator: (String value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'ထည့်ပါ';
-                                        } else if (_selectedCodeName
+                                        } else if (_selectedFCodeName
                                             .contains('..')) {
                                           return 'ထည့်ပါ';
                                         } else
@@ -892,20 +928,19 @@ class _State extends State<Form1> {
                                       },
                                       // onChanged: (value) => print(value),
                                       onChanged: (value) =>
-                                          _onSelectedCodeName(value),
-                                      value: _selectedCodeName,
+                                          _onSelectedFCodeName(value),
+                                      value: _selectedFCodeName,
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
-                                    // container defines the BoxConstraints of the children
+                                    width: 80,
+                                    // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('(...)'),
-                                      value: newValue,
+                                      value: FnewValue,
                                       items: <String>[
                                         '(နိုင်)',
                                         '(ဧည့်)',
@@ -923,20 +958,20 @@ class _State extends State<Form1> {
                                           return null;
                                       },
                                       onChanged: (String changedValue) {
-                                        newValue = changedValue;
+                                        FnewValue = changedValue;
                                         setState(() {});
                                       },
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
+
                                     child: TextFormField(
-                                      controller: nrcNum,
+                                      controller: fNrcNum,
                                       decoration: InputDecoration(
                                         hintText: '၁၁၀၂၀၃',
                                       ),
@@ -969,10 +1004,10 @@ class _State extends State<Form1> {
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
-                                      items: _dropDownMenuCitizenships,
-                                      value: _selectedCitizenship,
-                                      onChanged: changedDropDownCitizenship,
-                                      hint: Text(_selectedCitizenship),
+                                      items: _dropDownMenuFCitizenships,
+                                      value: _selectedFCitizenship,
+                                      onChanged: changedDropDownFCitizenship,
+                                      hint: Text(_selectedFCitizenship),
                                     )),
                               ],
                             ),
@@ -1080,7 +1115,7 @@ class _State extends State<Form1> {
                             TextFormField(
                               controller: enmotherName,
                               decoration: InputDecoration(
-                                labelText: 'အမည် (English)',
+                                labelText: 'အမည် (Englishလို)',
                                 prefixIcon: Icon(Icons.business_center),
                               ),
                               keyboardType: TextInputType.text,
@@ -1093,7 +1128,7 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
-                              controller: m_nationality,
+                              controller: motherNationality,
                               decoration: InputDecoration(
                                 labelText: 'လူမျိုး',
                                 prefixIcon:
@@ -1140,6 +1175,20 @@ class _State extends State<Form1> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
+                              controller: motherHometown,
+                              decoration: InputDecoration(
+                                labelText: 'မြို့နယ်',
+                                prefixIcon: Icon(Icons.edit_location),
+                              ),
+                              validator: (String value) {
+                                if (value.trim().isEmpty) {
+                                  return 'မြို့နယ်ထည့်ရန်လိုသည်';
+                                } else
+                                  return null;
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
                               controller: motherTownship,
                               decoration: InputDecoration(
                                 labelText: 'မြို့နယ်/ပြည်နယ်/တိုင်း',
@@ -1153,17 +1202,20 @@ class _State extends State<Form1> {
                               },
                             ),
                             const SizedBox(height: 16.0),
-                            Text('မှတ်ပုံတင်အမှတ်'),
+                            Text('မှတ်ပုံတင်အမှတ်',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                )),
                             const SizedBox(height: 8.0),
                             Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('.../'),
@@ -1177,23 +1229,23 @@ class _State extends State<Form1> {
                                       validator: (String value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'ထည့်ပါ';
-                                        } else if (_selectedCode
-                                            .contains('..')) {
+                                        } else if (_selectedMCode
+                                            .contains('.../')) {
                                           return 'ထည့်ပါ';
                                         } else
                                           return null;
                                       },
                                       onChanged: (value) =>
-                                          _onSelectedCode(value),
-                                      value: _selectedCode,
+                                          _onSelectedMCode(value),
+                                      value: _selectedMCode,
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
+
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('...'),
@@ -1207,7 +1259,7 @@ class _State extends State<Form1> {
                                       validator: (String value) {
                                         if (value?.isEmpty ?? true) {
                                           return 'ထည့်ပါ';
-                                        } else if (_selectedCodeName
+                                        } else if (_selectedMCodeName
                                             .contains('..')) {
                                           return 'ထည့်ပါ';
                                         } else
@@ -1215,20 +1267,19 @@ class _State extends State<Form1> {
                                       },
                                       // onChanged: (value) => print(value),
                                       onChanged: (value) =>
-                                          _onSelectedCodeName(value),
-                                      value: _selectedCodeName,
+                                          _onSelectedMCodeName(value),
+                                      value: _selectedMCodeName,
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
                                     child: DropdownButtonFormField<String>(
                                       hint: Text('(...)'),
-                                      value: newValue,
+                                      value: MnewValue,
                                       items: <String>[
                                         '(နိုင်)',
                                         '(ဧည့်)',
@@ -1246,20 +1297,20 @@ class _State extends State<Form1> {
                                           return null;
                                       },
                                       onChanged: (String changedValue) {
-                                        newValue = changedValue;
+                                        MnewValue = changedValue;
                                         setState(() {});
                                       },
                                     ),
                                   ),
                                 ),
                                 Flexible(
-                                  flex: 2,
                                   child: Container(
                                     // use this to match the Flex size..., is like using Expanded.
-                                    width: double.infinity,
+                                    width: 80,
                                     // container defines the BoxConstrains of the children
+
                                     child: TextFormField(
-                                      controller: nrcNum,
+                                      controller: mNrcNum,
                                       decoration: InputDecoration(
                                         hintText: '၁၁၀၂၀၃',
                                       ),
@@ -1292,10 +1343,10 @@ class _State extends State<Form1> {
                                 Padding(
                                     padding: EdgeInsets.only(left: 85.0),
                                     child: DropdownButton(
-                                      items: _dropDownMenuCitizenships,
-                                      value: _selectedCitizenship,
-                                      onChanged: changedDropDownCitizenship,
-                                      hint: Text(_selectedCitizenship),
+                                      items: _dropDownMenuMCitizenships,
+                                      value: _selectedMCitizenship,
+                                      onChanged: changedDropDownMCitizenship,
+                                      hint: Text(_selectedMCitizenship),
                                     )),
                               ],
                             ),
@@ -1516,7 +1567,9 @@ class _State extends State<Form1> {
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther
+                                    visibilityDad ||
+                                            visibilityMom ||
+                                            visibilityOther
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
@@ -1548,6 +1601,8 @@ class _State extends State<Form1> {
                                                     size: 22.0,
                                                   ),
                                                   onPressed: () {
+                                                    _changed(false, "dad");
+                                                    _changed(false, "mom");
                                                     _changed(false, "other");
                                                   },
                                                 ),
@@ -1561,7 +1616,9 @@ class _State extends State<Form1> {
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther
+                                    visibilityDad ||
+                                            visibilityMom ||
+                                            visibilityOther
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
@@ -1592,6 +1649,8 @@ class _State extends State<Form1> {
                                                     size: 22.0,
                                                   ),
                                                   onPressed: () {
+                                                    _changed(false, "dad");
+                                                    _changed(false, "mom");
                                                     _changed(false, "other");
                                                   },
                                                 ),
@@ -1605,7 +1664,9 @@ class _State extends State<Form1> {
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther
+                                    visibilityDad ||
+                                            visibilityMom ||
+                                            visibilityOther
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
@@ -1637,6 +1698,8 @@ class _State extends State<Form1> {
                                                     size: 22.0,
                                                   ),
                                                   onPressed: () {
+                                                    _changed(false, "dad");
+                                                    _changed(false, "mom");
                                                     _changed(false, "other");
                                                   },
                                                 ),
@@ -1650,7 +1713,9 @@ class _State extends State<Form1> {
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther
+                                    visibilityDad ||
+                                            visibilityMom ||
+                                            visibilityOther
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
@@ -1682,6 +1747,8 @@ class _State extends State<Form1> {
                                                     size: 22.0,
                                                   ),
                                                   onPressed: () {
+                                                    _changed(false, "dad");
+                                                    _changed(false, "mom");
                                                     _changed(false, "other");
                                                   },
                                                 ),
@@ -1695,7 +1762,9 @@ class _State extends State<Form1> {
                                 padding: EdgeInsets.only(top: 16.0),
                                 child: Column(
                                   children: <Widget>[
-                                    visibilityOther
+                                    visibilityDad ||
+                                            visibilityMom ||
+                                            visibilityOther
                                         ? Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
@@ -1729,6 +1798,8 @@ class _State extends State<Form1> {
                                                     size: 22.0,
                                                   ),
                                                   onPressed: () {
+                                                    _changed(false, "dad");
+                                                    _changed(false, "mom");
                                                     _changed(false, "other");
                                                   },
                                                 ),
@@ -1851,8 +1922,13 @@ class _State extends State<Form1> {
   void _submit() async {
     if (_validateForm()) {
       _NRC = _selectedCode + _selectedCodeName + newValue + nrcNum.text;
+      fatherNrc =
+          _selectedFCode + _selectedFCodeName + FnewValue + fathernrcNum.text;
+      motherNrc =
+          _selectedMCode + _selectedMCodeName + MnewValue + mothernrcNum.text;
       await http
           .post("https://uitonlinereg.000webhostapp.com//insert.php", body: {
+        //  "roll": roll.text,
         "uno": uno.text,
         "startingyear": startingyear.text,
         "mmSName": mmSName.text,
@@ -1871,50 +1947,49 @@ class _State extends State<Form1> {
         "matriYear": matriculationYear.text,
         "matriexamdept": matriculationDept.text,
         "address": address.text,
-        "major": _selectedMajor,
-        "roll": roll.text,
+
         "mmFName": mmfatherName.text,
         "enFName": enfatherName.text,
-        "f_nationality": f_nationality.text,
+        "f_nationality": fatherNationality.text,
         "f_religion": fatherReligion.text,
         "f_hometown": fatherBirthPlace.text,
         "f_township": fatherTownship.text,
         "f_division": fatherDivision.text,
-        "f_Job": fatherJob.text,
+        "f_nrc": fatherNrc,
+        "f_citizenship": _selectedFCitizenship,
+        "f_job": fatherJob.text,
         "f_position": fatherPosition.text,
         "f_department": fatherDept.text,
         "f_address": fatherAddress.text,
-        "f_phoneNo": fatherPhone.text,
+        "f_phone": fatherPhone.text,
+
         "mmMName": mmmotherName.text,
         "enMName": enmotherName.text,
-        "m_nationality": m_nationality.text,
+        "m_nationality": motherNationality.text,
         "m_religion": motherReligion.text,
         "m_hometown": motherBirthPlace.text,
-        "m_township": fatherTownship.text,
-        "m_division": fatherDivision.text,
-        "m_Job": motherJob.text,
+        "m_township": motherTownship.text,
+        "m_division": motherDivision.text,
+        "m_nrc": motherNrc,
+        "m_citizenship": _selectedMCitizenship,
+        "m_job": motherJob.text,
         "m_position": motherPosition.text,
         "m_department": motherDept.text,
         "m_address": motherAddress.text,
-        "m_phoneNo": motherPhone.text,
-        "dateOfBirth": _date,
-        "bloodtype": _selectedBlood,
-        "address": address.text,
-        "matriRollNo": matriculationRoll.text,
-        "matriYear": matriculationYear.text,
-        "matriexamDept": matriculationDept.text,
+        "m_phone": motherPhone.text,
+
         "pName": proName.text,
         "relationship": relationship.text,
         "job": proJob.text,
         "p_address": proAddress.text,
         "p_phoneNo": proPhoneNum.text,
+
+        "major": _selectedMajor,
+        "subjectArea": _selectedSubject,
       });
       await http
           .post("https://uitonlinereg.000webhostapp.com//setStatus.php", body: {
-        "enSName": enSName.text,
-        "NRC": _NRC,
-        "matriRoll": matriculationRoll.text,
-        "uno": uno.text,
+        "mmSName": mmSName.text,
         "fatherName": mmfatherName.text,
       });
     }
@@ -1935,6 +2010,36 @@ class _State extends State<Form1> {
     });
   }
 
+  void _onSelectedFCode(String fvalue) {
+    setState(() {
+      _selectedFCodeName = "...";
+      _FcodeNames = ["..."];
+      _selectedFCode = fvalue;
+      _FcodeNames = List.from(_FcodeNames)..addAll(nrc.getNameByCode(fvalue));
+    });
+  }
+
+  void _onSelectedFCodeName(String fvalue) {
+    setState(() {
+      _selectedFCodeName = fvalue;
+    });
+  }
+
+  void _onSelectedMCode(String mvalue) {
+    setState(() {
+      _selectedMCodeName = "...";
+      _McodeNames = ["..."];
+      _selectedMCode = mvalue;
+      _McodeNames = List.from(_McodeNames)..addAll(nrc.getNameByCode(mvalue));
+    });
+  }
+
+  void _onSelectedMCodeName(String mvalue) {
+    setState(() {
+      _selectedMCodeName = mvalue;
+    });
+  }
+
   void changedDropDownMajor(String selectedMajor) {
     setState(() {
       _selectedMajor = selectedMajor;
@@ -1949,16 +2054,61 @@ class _State extends State<Form1> {
     return items;
   }
 
+  void changedDropDownSubject(String selectedSubject) {
+    setState(() {
+      _selectedSubject = selectedSubject;
+    });
+  }
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuSubjects(
+      List subjects) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String subject in subjects) {
+      items.add(DropdownMenuItem(value: subject, child: Text(subject)));
+    }
+    return items;
+  }
+
   void changedDropDownCitizenship(String selectedCitizenship) {
     setState(() {
       _selectedCitizenship = selectedCitizenship;
     });
   }
 
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuNationalities(
-      List nationalities) {
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuCitizenships(
+      List citizenships) {
     List<DropdownMenuItem<String>> items = List();
-    for (String Citizenship in nationalities) {
+    for (String Citizenship in citizenships) {
+      items.add(DropdownMenuItem(value: Citizenship, child: Text(Citizenship)));
+    }
+    return items;
+  }
+
+  void changedDropDownFCitizenship(String selectedCitizenship) {
+    setState(() {
+      _selectedFCitizenship = selectedCitizenship;
+    });
+  }
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuFCitizenships(
+      List citizenships) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String Citizenship in citizenships) {
+      items.add(DropdownMenuItem(value: Citizenship, child: Text(Citizenship)));
+    }
+    return items;
+  }
+
+  void changedDropDownMCitizenship(String selectedCitizenship) {
+    setState(() {
+      _selectedMCitizenship = selectedCitizenship;
+    });
+  }
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuMCitizenships(
+      List citizenships) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String Citizenship in citizenships) {
       items.add(DropdownMenuItem(value: Citizenship, child: Text(Citizenship)));
     }
     return items;

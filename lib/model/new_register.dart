@@ -25,16 +25,17 @@ class _State extends State<new_register> {
   burmeseRegEx regEx = new burmeseRegEx();
 
   TextEditingController name = new TextEditingController();
-  TextEditingController fatherName = new TextEditingController();
+  TextEditingController matriculationRoll = new TextEditingController();
+  TextEditingController mmfatherName = new TextEditingController();
 
   Future<List> _login() async {
     final response =
-        await http.post("https://uitonlinereg.000webhostapp.com//GetNew.php", body: {
+    await http.post("https://uitonlinereg.000webhostapp.com//getNew.php", body: {
       "Name": name.text,
-      "uno": fatherName.text,
+      "matriculation_no": matriculationRoll.text,
     });
     final duration =
-        await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
+    await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
 
     var getTime = json.decode(duration.body);
     time = getTime[0]['end_date'];
@@ -113,17 +114,46 @@ class _State extends State<new_register> {
                           ),
                           const SizedBox(height: 16.0),
                           TextFormField(
-                            controller: fatherName,
+                            controller: matriculationRoll,
                             decoration: InputDecoration(
-                              labelText: 'အဖေနာမည်',
+                              labelText: 'တက္ကသိုလ်ဝင်တန်းအောင်မြင်သည့်ခုံအမှတ်',
+                              prefixIcon: Icon(Icons.book),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ခုံအမှတ်ထည့်ရန်လိုသည်';
+                              } else if (regEx.validateMmInput(value)) {
+                                return 'မြန်မာလိုထည့်ရန်လိုသည်';
+                              }  else
+                                return null;
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: mmfatherName,
+                            decoration: InputDecoration(
+                              labelText: 'အဖေနာမည်(မြန်မာ)',
                               prefixIcon: Icon(Icons.account_circle),
                             ),
                             validator: (String value) {
                               if (value.trim().isEmpty) {
                                 return 'ထည့်ရန်လိုသည်';
-                              } else
+                              }
+                              else if (regEx.validateMmInput(value)) {
+                                return 'မြန်မာလိုရေးရန်လိုသည်';
+                              }else
                                 return null;
                             },
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                  value: true
+                              ),
+                              Text(
+                                'I agree to Terms & Conditions',
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16.0),
                           Padding(
@@ -133,7 +163,7 @@ class _State extends State<new_register> {
                               children: <Widget>[
                                 new Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     RaisedButton(
                                       padding: EdgeInsets.all(10.0),
@@ -171,4 +201,5 @@ class _State extends State<new_register> {
     bool _isValid = _formKey.currentState.validate();
     return _isValid;
   }
+
 }

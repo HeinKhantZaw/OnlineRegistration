@@ -19,23 +19,25 @@ class old_register extends StatefulWidget {
 
 class _State extends State<old_register> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userName = '';
+  String username = '';
   String password = '';
+//  bool _agreedToTOS = true;
   getNRC nrc = getNRC();
   bool darkThemeEnabled = false;
   burmeseRegEx regEx = new burmeseRegEx();
 
-  TextEditingController name = new TextEditingController();
+  TextEditingController stuname = new TextEditingController();
   TextEditingController uno = new TextEditingController();
+  TextEditingController mmfatherName = new TextEditingController();
 
   Future<List> _login() async {
     final response =
-        await http.post("https://uitonlinereg.000webhostapp.com//Get.php", body: {
-      "Name": name.text,
+    await http.post("https://uitonlinereg.000webhostapp.com//get.php", body: {
+      "studentname": stuname.text,
       "uno": uno.text,
     });
     final duration =
-        await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
+    await http.post("https://uitonlinereg.000webhostapp.com//getTime.php");
 
     var getTime = json.decode(duration.body);
     time = getTime[0]['end_date'];
@@ -44,18 +46,20 @@ class _State extends State<old_register> {
       Navigator.pushReplacementNamed(context, '/error');
     } else {
       if (dataUser[0]['status'] == '0') {
-        userName = dataUser[0]['username'];
+        username = dataUser[0]['username'];
         password = dataUser[0]['password'];
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
         showDialog(
           context: context,
           builder: (BuildContext context) =>
               CustomDialog(
                 title: "Success",
                 description:
-                "Username :" + userName +
+                "Username :" + username +
                     "\nPassword :" +
                     password, buttonText: "OK",
               ),
+
         );
       } else {
         Navigator.pushReplacementNamed(context, '/status');
@@ -97,7 +101,7 @@ class _State extends State<old_register> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: name,
+                            controller: stuname,
                             decoration: InputDecoration(
                               labelText: 'နာမည်',
                               hintText: 'မောင်/မ',
@@ -105,9 +109,9 @@ class _State extends State<old_register> {
                             ),
                             validator: (String value) {
                               if (value.trim().isEmpty)
-                                {
-                                  return 'နာမည်ထည့်ရန်လိုသည်';
-                                }
+                              {
+                                return 'နာမည်ထည့်ရန်လိုသည်';
+                              }
                               else if (regEx.validateMmInput(value)) {
                                 return 'မြန်မာလိုထည့်ရန်လိုသည်';
                               }
@@ -137,6 +141,38 @@ class _State extends State<old_register> {
                             },
                           ),
                           const SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: mmfatherName,
+                            decoration: InputDecoration(
+                              labelText: 'အဖေနာမည်',
+                              prefixIcon: Icon(Icons.account_circle),
+                            ),
+                            validator: (String value) {
+                              if (value.trim().isEmpty) {
+                                return 'ထည့်ရန်လိုသည်';
+                              }else if (regEx.validateMmInput(value)) {
+                                return 'မြန်မာလိုရေးရန်လိုသည်';
+                              }
+                              else
+                                return null;
+                            },
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Checkbox( value: true,
+//                                value: _agreedToTOS,
+//                                onChanged: _setAgreedToTOS,
+                              ),
+//                              GestureDetector(
+//                                onTap: () => _setAgreedToTOS(!_agreedToTOS),
+//                                child: const
+                              Text(
+                                'I agree to Terms & Conditions',
+                              ),
+//                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -144,7 +180,7 @@ class _State extends State<old_register> {
                               children: <Widget>[
                                 new Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     RaisedButton(
                                       padding: EdgeInsets.all(0.0),
@@ -183,4 +219,10 @@ class _State extends State<old_register> {
     bool _isValid = _formKey.currentState.validate();
     return _isValid;
   }
+
+//  void _setAgreedToTOS(bool newValue) {
+//    setState(() {
+//      _agreedToTOS = newValue;
+//    });
+//  }
 }
